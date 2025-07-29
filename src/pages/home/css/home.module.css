@@ -1,0 +1,232 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../assets/images/AIHome_bg_light.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.darkContainerImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../assets/images/AIHome_bg_dark.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.skeletonContainer {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+}
+
+.darkSkeletonContainer {
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 60% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #0d1117 100%);
+}
+
+.skeletonIcon {
+  width: 30px;
+  height: 30px;
+  background: #d9d9d9;
+  border-radius: 10px;
+}
+
+.darkSkeletonIcon {
+  width: 30px;
+  height: 30px;
+  background: #21262d;
+  border-radius: 10px;
+}
+
+.skeletonLogo {
+  width: 40%;
+  height: 40%;
+  background: #d9d9d9;
+  border-radius: 10px;
+}
+
+.darkSkeletonLogo {
+  width: 40%;
+  height: 40%;
+  background: #21262d;
+  border-radius: 10px;
+}
+
+.sliderWrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 60px;
+  padding: 20px 15px 0 15px;
+}
+
+.icon {
+  fill: #ffffff;
+  width: 30px;
+  height: 30px;
+}
+
+.mainContentWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 10px;
+  overflow-y: auto;
+}
+
+.skeletonMainContentWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 10px;
+  overflow-y: auto;
+}
+
+.containerColor {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.darkContainerColor {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 60% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #0d1117 100%);
+}
+
+.activeChat {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #f7f8fc;
+}
+
+.lightBackground {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(270deg, #e7dcfa 0%, #d9e2fa 100%);
+}
+
+.darkBackground {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 60% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #0d1117 100%);
+}
+
+.controlPannel {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flexcol {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testLink {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.testLink:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.themeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.themeToggle svg {
+  width: 20px;
+  height: 20px;
+}

@@ -1,0 +1,76 @@
+.chartContainer {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chartHeader {
+  margin-bottom: 12px;
+}
+
+.chartTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.chartContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chartPlaceholder {
+  background: #f8f9fa;
+  border: 1px dashed #dee2e6;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+}
+
+.chartPlaceholder p {
+  margin: 4px 0;
+  color: #6c757d;
+}
+
+.chartNote {
+  font-size: 12px;
+  font-style: italic;
+  color: #adb5bd;
+}
+
+.dataPreview {
+  border-top: 1px solid #e9ecef;
+  padding-top: 12px;
+}
+
+.dataPreview h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.labelsList {
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.datasetItem {
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.datasetItem:last-child {
+  margin-bottom: 0;
+} 

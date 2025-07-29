@@ -1,0 +1,91 @@
+.sliderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  height: 100%;
+}
+
+.cardSlider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-top: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.cardSlider::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  scroll-snap-align: center;
+  box-sizing: border-box;
+  min-width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 0 10px;
+  font-weight: bold;
+  font-size: 29px;
+  line-height: 150%;
+  overflow-y: auto;
+  text-overflow: ellipsis;
+}
+
+.cardText {
+  font-weight: bold;
+  font-size: 29px;
+  line-height: 150%;
+}
+
+.indicatorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+  background: #d6dbe1;
+  border-radius: 100px;
+}
+
+.indicator.active {
+  width: 16px;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 100px;
+}
+
+.indicator.skeleton {
+  width: 16px;
+  height: 6px;
+  background: #d9d9d9;
+  border-radius: 100px;
+}
+
+.skeletonCard {
+  box-sizing: border-box;
+  min-width: 100%;
+  height: 50vh;
+  background: #d9d9d9;
+  border-radius: 16px;
+}
+.highlighText {
+  color: blue;
+}
+
+.textLarger {
+  font-size: larger;
+}

@@ -1,0 +1,71 @@
+.sliderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
+.cardSlider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-top: 20px;
+  width: 100%;
+}
+
+.cardSlider::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  scroll-snap-align: center;
+  box-sizing: border-box;
+  min-width: 40%;
+  height: 18vh;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 0 5px;
+}
+
+.cardIcon {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+.safeCardIcon {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+.skeletonCard {
+  min-width: 40%;
+  height: 18vh;
+  background: #d9d9d9;
+  border-radius: 16px;
+  margin: 0 5px;
+}
+
+.cardText {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 110%;
+  color: var(--color-gray);
+}
+
+.largeText {
+  font-size: 25px !important;
+}
+
+.iconWrap {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}

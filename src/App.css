@@ -1,0 +1,207 @@
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+button {
+  border: none;
+  background-color: transparent;
+}
+
+#root {
+  height: 100%;
+  max-width: 575px;
+  --color-gray: #6c747e;
+  --color-dark-gray: #666666;
+  --color-blue: #7a9fff;
+  --color-dark-mode-black: #1b1e23;
+}
+
+input:focus {
+  outline: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 9999;
+}
+
+.highlighText {
+  color: blue;
+}
+
+.cardIcon {
+  width: 30px;
+  height: auto;
+}
+
+.loadingLottie {
+  width: 20px;
+  height: 20px;
+}
+
+.lottie {
+  /* background-color: blue; */
+  /* /* border-radius: 50%; */
+}
+
+@keyframes growShrink {
+  0%,
+  100% {
+    transform: scaleY(0.8);
+  }
+  50% {
+    transform: scaleY(0.5);
+  }
+}
+
+.wave {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px;
+}
+
+.wave path {
+  transform-origin: center;
+  animation: growShrink 2s infinite ease-in-out;
+}
+
+.wave path:nth-child(odd) {
+  animation-delay: 0s;
+}
+
+.wave path:nth-child(even) {
+  animation-delay: 1s;
+}
+
+@keyframes colorChange {
+  0%,
+  100% {
+    fill: #366dff; /* 파란색 시작과 끝 */
+  }
+  50% {
+    fill: #e5ecff; /* 중간에 연한 파란색 */
+  }
+}
+
+.dot1 {
+  animation: colorChange 1s ease-in-out infinite;
+}
+
+.dot2 {
+  animation: colorChange 1s ease-in-out infinite 0.2s; /* 0.2초 지연 */
+}
+
+.dot3 {
+  animation: colorChange 1s ease-in-out infinite 0.4s; /* 0.4초 지연 */
+}
+
+.cardContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  opacity: 0;
+  top: 20px;
+  transition: top 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.cardContainer.show {
+  top: 0;
+  opacity: 1;
+}
+
+.cardWrap {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+  padding: 20px 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 5px;
+}
+
+.bondHeader {
+  display: flex;
+  font-weight: bold;
+  font-size: small;
+  width: 40%;
+  justify-content: space-between;
+}
+
+.bondTitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.textSmall {
+  font-size: small;
+}
+
+.textMedium {
+  font-size: medium;
+}
+
+.textLarge {
+  font-size: large;
+}
+
+.textLarger {
+  font-size: larger;
+}
+
+.textBold {
+  font-weight: bold;
+}
+
+.lightSkyBlue {
+  color: #7a9fff;
+}
+
+.colorGray {
+  color: var(--color-gray);
+}
+
+.colorRed {
+  color: #eb0000;
+}
+
+.colorBlue {
+  color: #366dff;
+}
+
+.percentage {
+  display: flex;
+  justify-content: end;
+  color: #eb0000;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.boxWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.boxItem {
+  min-width: 40%;
+  padding: 10px;
+  text-align: center;
+  background: #e5ecff;
+  border-radius: 10px;
+}
