@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import HomeNew from "./pages/home/HomeNew";
-import ChatPage from "./pages/ChatPage";
+import ChatPage from "./pages/ChatPage.jsx";
 import { ThemeProvider } from "./components/ThemeContext";
 
 const App = () => {

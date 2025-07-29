@@ -1,14 +1,8 @@
 import React from 'react';
-import { SubButtonData } from '../../types/chatTypes';
 import styles from './SubButtons.module.css';
 
-interface SubButtonsProps {
-  data: SubButtonData['data'];
-  onAction?: (action: string, value?: any) => void;
-}
-
-const SubButtons: React.FC<SubButtonsProps> = ({ data, onAction }) => {
-  const handleButtonClick = (button: { text: string; action?: string; value?: any }) => {
+const SubButtons = ({ data, onAction }) => {
+  const handleButtonClick = (button) => {
     if (onAction && button.action) {
       onAction(button.action, button.value);
     }

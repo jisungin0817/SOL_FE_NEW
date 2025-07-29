@@ -1,8 +1,7 @@
 import React from 'react';
-import { MainAnswerProps } from '../../types/chatTypes';
 import styles from './MainAnswer.module.css';
 
-const MainAnswer: React.FC<MainAnswerProps> = ({ items }) => {
+const MainAnswer = ({ items }) => {
   return (
     <div className={styles.mainAnswerContainer}>
       {items.map((item, index) => (

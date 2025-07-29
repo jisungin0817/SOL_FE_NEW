@@ -1,14 +1,8 @@
 import React from 'react';
-import { SubCardData } from '../../types/chatTypes';
 import styles from './SubCard.module.css';
 
-interface SubCardProps {
-  data: SubCardData['data'];
-  onAction?: (action: string, value?: any) => void;
-}
-
-const SubCard: React.FC<SubCardProps> = ({ data, onAction }) => {
-  const handleActionClick = (action: { text: string; action: string }) => {
+const SubCard = ({ data, onAction }) => {
+  const handleActionClick = (action) => {
     if (onAction) {
       onAction(action.action);
     }

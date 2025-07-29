@@ -6,6 +6,7 @@ import { RiSunLine, RiMoonLine } from "react-icons/ri";
 import logo from "../../assets/images/Super_Sol_logo.png";
 import CardSliderWithIndicator from "./CardSliderWithIndicator";
 import CardSlider from "./CardSlider";
+// 채팅 관련 import 제거 - 새로운 구조에서는 SubChat을 사용
 
 // 테마 설정 함수들 (임시로 직접 구현)
 const initSetTheme = (theme, isDarkMode, toggleDarkMode, changeFontSize) => {
@@ -39,6 +40,8 @@ const Home = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const { isDarkMode, fontSize, toggleDarkMode, changeFontSize } = useTheme();
+  
+  // 채팅 관련 상태 제거 - ChatPage에서 처리
 
 
 
@@ -77,8 +80,8 @@ const Home = () => {
   });
 
   const goback = () => {
-    // 새로운 채팅 페이지로 이동
-    navigate('/chat');
+    // 메인 페이지로 이동
+    navigate('/');
   };
 
   return (
@@ -174,6 +177,8 @@ const Home = () => {
             </div>
           </div>
         </div>
+        
+        {/* 채팅 UI 제거 - ChatPage에서 처리 */}
       </div>
     </div>
   );

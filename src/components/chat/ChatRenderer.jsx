@@ -1,10 +1,9 @@
 import React from 'react';
-import { ChatRendererProps } from '../types/chatTypes';
-import MainAnswer from './main/MainAnswer';
-import SubDataRenderer from './sub/SubDataRenderer';
+import MainAnswer from '../main/MainAnswer';
+import SubDataRenderer from '../sub/SubDataRenderer';
 import styles from './ChatRenderer.module.css';
 
-const ChatRenderer: React.FC<ChatRendererProps> = ({ message, onAction }) => {
+const ChatRenderer = ({ message, onAction }) => {
   const isUser = message.speaker === 'user';
   const isBot = message.speaker === 'chatbot';
 

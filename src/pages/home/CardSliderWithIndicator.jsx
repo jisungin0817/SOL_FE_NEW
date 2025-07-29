@@ -59,14 +59,22 @@ const CardSliderWithIndicator = (props) => {
                         className={`${isDarkMode ? styles.darkCard : styles.card}`}
                         onClick={clickCardSliderWithIndicator}
                     >
-                      <ReactTyped
-                          showCursor={false}
-                          typeSpeed={40}
-                          strings={[item]}
-                          className={`${styles.cardText} ${
-                              isDarkMode && styles.darkCardText
-                          } ${fontSize === "large" && styles.textLarger}`}
-                      />
+                      {item && item.trim() !== "" ? (
+                        <ReactTyped
+                            showCursor={false}
+                            typeSpeed={40}
+                            strings={[item]}
+                            className={`${styles.cardText} ${
+                                isDarkMode && styles.darkCardText
+                            } ${fontSize === "large" && styles.textLarger}`}
+                        />
+                      ) : (
+                        <span className={`${styles.cardText} ${
+                            isDarkMode && styles.darkCardText
+                        } ${fontSize === "large" && styles.textLarger}`}>
+                          메시지가 없습니다.
+                        </span>
+                      )}
                     </div>
                 ))}
               </>

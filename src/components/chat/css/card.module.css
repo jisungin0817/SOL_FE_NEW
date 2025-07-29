@@ -1,0 +1,406 @@
+.cardContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  opacity: 0;
+  top: 20px;
+  transition: top 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.cardContainer.show {
+  top: 0;
+  opacity: 1;
+}
+
+.cardWrap {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+  padding: 20px 10px 20px 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cardWrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.darkCardWrap {
+  display: flex;
+  flex-direction: column;
+  background: rgba(59, 130, 246, 0.1);
+  margin-bottom: 15px;
+  padding: 20px 10px 20px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.darkCardWrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.accountInfo {
+  display: flex;
+}
+
+.flexcol {
+  display: flex;
+  width: 100%;
+  margin-left: 10px;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.balanceDisplay {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.bondHeader {
+  display: flex;
+  font-weight: bold;
+  font-size: small;
+  width: 40%;
+  justify-content: space-between;
+}
+
+.savingHeader {
+  display: flex;
+  font-weight: bold;
+  font-size: small;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.savingFooter {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.lightSkyBlue {
+  color: #7a9fff;
+}
+
+.bondHeaderItem2 {
+  color: var(--color-gray);
+}
+
+.bondTitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.textSmall {
+  font-size: small;
+}
+
+.textMedium {
+  font-size: medium;
+}
+
+.textLarge {
+  font-size: large;
+}
+
+.textLarger {
+  font-size: larger;
+}
+.textXLarger {
+  font-size: 24px;
+}
+
+.gap15 {
+  gap: 15px;
+}
+
+.marginY10 {
+  margin: 10px 0 10px;
+  justify-content: center;
+}
+
+.textBold {
+  font-weight: bold;
+}
+
+.colorGray {
+  color: var(--color-gray);
+}
+
+.colorRed {
+  color: #eb0000;
+}
+.colorBlue {
+  color: #366dff;
+}
+.colorWhite {
+  color: #ffffff;
+}
+.colorBlack {
+  color: #000000;
+}
+
+.darkTextLarger {
+  font-size: larger;
+  color: #ffffff;
+}
+
+.darkTextLarge {
+  font-size: large;
+  color: #ffffff;
+}
+
+.darkTextMedium {
+  font-size: medium;
+  color: #e5e7eb;
+}
+
+.darkColorGray {
+  color: #9ca3af;
+}
+
+.percentage {
+  display: flex;
+  justify-content: end;
+  color: #eb0000;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.boxWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.boxBorderWrap {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #d9d9d9;
+  font-weight: bold;
+}
+
+.boxBorderWrap:first-child {
+  padding-top: 0;
+}
+.boxBorderWrap:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.boxItem {
+  min-width: 40%;
+  padding: 10px;
+  text-align: center;
+  background: #e5ecff;
+  border-radius: 10px;
+}
+
+.bankBoxItem {
+  min-width: 40%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.boxLightGray {
+  background: #b6b6b6;
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+.boxLightBlue2 {
+  background: #7a9fff;
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+.boxLightBlue {
+  background: #e5ecff;
+  color: var(--color-dark-gray);
+}
+
+.boxBlue {
+  background: #366dff;
+  color: #ffffff;
+}
+.highlightedText {
+  color: #366dff;
+}
+
+.borderBottom {
+  color: var(--color-dark-gray);
+  font-size: small;
+}
+
+.line {
+  margin: 25px 0 25px;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  color: var(--color-dark-gray);
+}
+
+.productWrap {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.upDownIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.largeText {
+  font-size: 60px;
+}
+
+.selectWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.selectBox {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: end;
+  gap: 10px;
+}
+
+.selectBox select {
+  background: #f7f8fc;
+  border-radius: 10px;
+  padding: 16px;
+  border: none;
+}
+
+.itemFlexColumn {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.itemFlexColumn input[type="range"] {
+  -webkit-appearance: none; /* 크롬, 사파리 */
+  width: 100%; /* 원하는 너비 */
+  height: 6px;
+  background: #ddd; /* 기본 트랙 배경 */
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.itemFlexColumn input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  background: #f7f8fc;
+  border-radius: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border: 3px solid #2196f3;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -6px;
+}
+
+.rate {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  color: #7a9fff;
+}
+
+.resultCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.monthlyAmount {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.monthlyAmount h2 {
+  font-size: 16px;
+  color: #999;
+}
+
+.highlight {
+  font-size: 32px;
+  font-weight: bold;
+  color: #3483fa;
+}
+
+.chart {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 150px;
+  gap: 20px;
+}
+
+.bar {
+  text-align: center;
+}
+
+.barLabel {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.barValue {
+  background-color: #c5dbff;
+  color: #3483fa;
+  width: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-weight: bold;
+  border-radius: 8px;
+}

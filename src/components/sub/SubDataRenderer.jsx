@@ -1,15 +1,14 @@
 import React from 'react';
-import { SubDataRendererProps, SubDataType } from '../../types/chatTypes';
-import SubMap from './SubMap';
 import SubButtons from './SubButtons';
 import SubChart from './SubChart';
 import SubCard from './SubCard';
+import SubChat from './SubChat';
 
-const SubDataRenderer: React.FC<SubDataRendererProps> = ({ data, onAction }) => {
-  const renderSubComponent = (item: SubDataType, index: number) => {
+const SubDataRenderer = ({ data, onAction }) => {
+  const renderSubComponent = (item, index) => {
     switch (item.type) {
-      case 'map':
-        return <SubMap key={index} data={item.data} />;
+      case 'chat':
+        return <SubChat key={index} data={item.data} onAction={onAction} />;
       case 'buttons':
         return <SubButtons key={index} data={item.data} onAction={onAction} />;
       case 'chart':

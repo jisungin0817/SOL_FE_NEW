@@ -1,0 +1,194 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px 20px 0 0;
+  align-items: center;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 400;
+}
+
+.darkContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px 20px 0 0;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(10, 14, 23, 0.95) 0%, rgba(26, 31, 46, 0.95) 50%, rgba(13, 17, 23, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 400;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 20px 10px 10px;
+  border-radius: 16px 16px 0 0;
+}
+
+.wrapInput {
+  display: flex;
+  align-items: center;
+  outline: none;
+  width: 100%;
+  height: 40px;
+  padding: 0 0 0 20px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 35px;
+}
+
+.darkWrapInput {
+  display: flex;
+  align-items: center;
+  outline: none;
+  width: 100%;
+  height: 40px;
+  padding: 0 0 0 20px;
+  background: linear-gradient(135deg, rgba(20, 25, 35, 0.8) 0%, rgba(30, 35, 45, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 35px;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.fillWarpInput {
+  background: #366dff;
+}
+
+.fillIcon {
+  fill: #366dff;
+}
+
+.fillsendIconWhite {
+  background-color: #ffffff;
+}
+.fillsendIconGray {
+  background-color: #d9d9d9;
+}
+
+.input {
+  width: 100%;
+  height: 90%;
+  background: none;
+  border: none;
+}
+
+.darkInput {
+  width: 100%;
+  height: 90%;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.darkInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.micIcon {
+  width: 25px;
+  height: 25px;
+}
+
+.darkMicIcon {
+  width: 25px;
+  height: 25px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.darkMicIcon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  fill: #366dff;
+  border-radius: 50%;
+}
+
+.sendIcon {
+  width: 30px;
+  height: 30px;
+  fill: #366dff;
+  border-radius: 50%;
+}
+
+.darkSendIcon {
+  width: 30px;
+  height: 30px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.darkSendIcon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.sendIcon:active {
+  width: 30px;
+  height: 26px;
+  fill: #ffffff;
+  background-color: #366dff;
+  border-radius: 50%;
+}
+
+.skeletonContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  background: #f1f1f1;
+  border-radius: 20px 20px 0 0;
+  z-index: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skeletonIcon {
+  width: 30px;
+  height: 30px;
+  background: #d9d9d9;
+  border-radius: 10px;
+}
+
+.skeletonInput {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px 0 20px;
+  background: #ffffff;
+  border-radius: 35px;
+}
+
+.mmss {
+  margin-left: 5px;
+  margin-right: 2px;
+  color: #ffffff;
+  font-size: small;
+  font-weight: bold;
+}

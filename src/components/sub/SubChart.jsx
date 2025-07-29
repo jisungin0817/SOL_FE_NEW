@@ -1,12 +1,7 @@
 import React from 'react';
-import { SubChartData } from '../../types/chatTypes';
 import styles from './SubChart.module.css';
 
-interface SubChartProps {
-  data: SubChartData['data'];
-}
-
-const SubChart: React.FC<SubChartProps> = ({ data }) => {
+const SubChart = ({ data }) => {
   const renderChartPlaceholder = () => {
     const { chartType, labels, datasets } = data;
     
