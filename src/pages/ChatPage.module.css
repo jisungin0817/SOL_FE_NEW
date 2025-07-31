@@ -1,29 +1,93 @@
 .chatPage {
+  /* Rectangle 4 - 전체 화면 */
   width: 100%;
   height: 100vh;
+  background: #0B111D;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(270deg, #e7dcfa 0%, #d9e2fa 100%);
   position: relative;
+  overflow: hidden;
 }
 
 .darkMode {
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.2) 0%, transparent 60%),
-    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.2) 0%, transparent 60%),
-    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 60% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-    linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #0d1117 100%);
+  background-color: #0B111D;
   color: #e2e8f0;
 }
 
-
-
 .chatContainer {
   flex: 1;
-  overflow: hidden;
   position: relative;
+  z-index: 15;
+  padding: 20px;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 0;
+}
+
+.messageContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.userMessage {
+  align-self: flex-end;
+  color: #597cd8;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.userMessage::before {
+  content: '" ';
+}
+
+.userMessage::after {
+  content: ' "';
+}
+
+.aiMessage {
+  align-self: flex-start;
+  background: #2a3441;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 18px 18px 18px 4px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchingIcon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #1A73FC;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.aiResponse {
+  align-self: flex-start;
+  color: #ffffff;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 8px;
 }
 
 /* 슬라이드 애니메이션 */
@@ -59,7 +123,110 @@
   animation: slideOutToBottom 0.5s ease-in;
 }
 
+/* 웰컴메시지 스타일 */
+.welcomeMessage {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 10;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.logoContainer {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 4rem;
+  height: 4rem;
+  filter: drop-shadow(0 0 20px rgba(26, 115, 252, 0.5));
+}
+
+.welcomeText {
+  margin-bottom: 1rem;
+}
+
+.welcomeTitle, .welcomeSubtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #1A73FC, #63D8F7, #1A73FC);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 3s ease-in-out infinite;
+  line-height: 1.4;
+}
+
+.userGreeting {
+  color: #94a3b8;
+}
+
+.greetingText, .helpText {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* 그라데이션 애니메이션 */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 애니메이션 제거 */
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   /* 모바일 스타일 */
-} 
+  .welcomeMessage {
+    top: 30%;
+    padding: 0 0.5rem;
+  }
+  
+  .logo {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .welcomeTitle, .welcomeSubtitle {
+    font-size: 1.7rem;
+  }
+  
+  .greetingText, .helpText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 작은 모바일 스타일 */
+  .welcomeMessage {
+    top: 30%;
+    padding: 0 0.25rem;
+  }
+  
+  .logo {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .welcomeTitle, .welcomeSubtitle {
+    font-size: 1.7rem;
+  }
+  
+  .greetingText, .helpText {
+    font-size: 1rem;
+  }
+}

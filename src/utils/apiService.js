@@ -1,9 +1,9 @@
 // AI 채팅 API 서비스
 // API 설정
 const API_CONFIG = {
-  BASE_URL: 'http://localhost:8080',
+  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://m1.geniemars.kt.co.kr:10665',
   ENDPOINTS: {
-    CHAT: '/api/chat',
+    CHAT: process.env.REACT_APP_USE_PROXY === 'true' ? '/api/chat' : '/v1/chat/completions',
     CHAT_STREAM: '/api/chat/stream',
     HEALTH: '/api/health'
   },

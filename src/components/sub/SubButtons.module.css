@@ -4,12 +4,41 @@
 
 .buttonsGrid {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
 }
 
+/* 버튼 1개일 때 */
+.singleButton {
+  justify-content: center;
+}
+
+.singleButton .button {
+  min-width: 120px;
+  max-width: 200px;
+}
+
+/* 버튼 2개일 때 */
+.twoButtons {
+  justify-content: center;
+}
+
+.twoButtons .button {
+  flex: 1;
+  max-width: 150px;
+}
+
+/* 버튼 3개 이상일 때 */
+.multipleButtons {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.multipleButtons .button {
+  min-width: 80px;
+}
+
 .button {
-  background: #007bff;
+  background: #0060F6;
   color: white;
   border: none;
   border-radius: 6px;
@@ -18,14 +47,13 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 80px;
   text-align: center;
 }
 
 .button:hover {
-  background: #0056b3;
+  background: #0047c7;
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 96, 246, 0.3);
 }
 
 .button:active {
@@ -35,7 +63,7 @@
 
 .button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(0, 96, 246, 0.25);
 }
 
 /* 반응형 디자인 */
@@ -47,5 +75,6 @@
   .button {
     width: 100%;
     min-width: auto;
+    max-width: none;
   }
 } 

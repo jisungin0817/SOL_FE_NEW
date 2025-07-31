@@ -8,9 +8,18 @@ const SubButtons = ({ data, onAction }) => {
     }
   };
 
+  // 버튼 개수에 따라 클래스명 결정
+  const getButtonLayoutClass = () => {
+    const buttonCount = data.length;
+    
+    if (buttonCount === 1) return styles.singleButton;
+    if (buttonCount === 2) return styles.twoButtons;
+    return styles.multipleButtons;
+  };
+
   return (
     <div className={styles.buttonsContainer}>
-      <div className={styles.buttonsGrid}>
+      <div className={`${styles.buttonsGrid} ${getButtonLayoutClass()}`}>
         {data.map((button, index) => (
           <button
             key={index}

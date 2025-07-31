@@ -12,6 +12,23 @@ module.exports = {
       directory: path.join(__dirname, "public"),
     },
     compress: true,
+    proxy: {
+      '/api': {
+        target: 'https://m1.geniemars.kt.co.kr:10665',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        },
+        secure: false,
+        logLevel: 'debug',
+        onProxyReq: (proxyReq, req, res) => {
+          console.log('프록시 요청:', req.method, req.url, '→', proxyReq.path);
+        },
+        onProxyRes: (proxyRes, req, res) => {
+          console.log('프록시 응답:', proxyRes.statusCode);
+        }
+      }
+    }
   },
   module: {
     rules: [

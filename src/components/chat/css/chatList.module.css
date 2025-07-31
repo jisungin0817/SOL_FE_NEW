@@ -1,51 +1,35 @@
 .container {
-  position: absolute;
-  bottom: -200vh;
-  left: 0;
-  width: 100vw;
+  position: relative;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   background: transparent;
   box-shadow: none;
-  transition: all 0.5s ease-in-out;
   z-index: 300;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .open {
-  bottom: 0 !important;
   pointer-events: auto;
-  background: linear-gradient(270deg, #e7dcfa 0%, #d9e2fa 100%);
-  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+  background: transparent;
 }
 
 .darkContainer {
-  position: absolute;
-  bottom: -200vh;
-  left: 0;
-  width: 100vw;
+  position: relative;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   background: transparent;
   box-shadow: none;
-  transition: all 0.5s ease-in-out;
   z-index: 300;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .darkContainer.open {
-  bottom: 0 !important;
   pointer-events: auto;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.2) 0%, transparent 60%),
-    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.2) 0%, transparent 60%),
-    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 60% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-    linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #0d1117 100%);
-  box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.3);
+  background: transparent;
 }
 
 .header {

@@ -1,155 +1,96 @@
 .container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  border-radius: 20px 20px 0 0;
-  align-items: center;
-  background-color: #ffffff;
   position: relative;
-  z-index: 400;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .darkContainer {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  border-radius: 20px 20px 0 0;
-  align-items: center;
-  background: linear-gradient(135deg, rgba(10, 14, 23, 0.95) 0%, rgba(26, 31, 46, 0.95) 50%, rgba(13, 17, 23, 0.95) 100%);
-  backdrop-filter: blur(20px);
   position: relative;
-  z-index: 400;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .wrap {
+  /* Rectangle 5 - 반응형 */
+  box-sizing: border-box;
+  position: absolute;
+  width: calc(100% - 40px);
+  max-width: 400px;
+  height: 100px;
+  background: #18222F;
+  border: 1.5px solid #51678d;
+  border-radius: 19px;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: 8px 20px 10px 10px;
-  border-radius: 16px 16px 0 0;
+  padding: 0 15px 40px;
+  z-index: 10;
 }
 
-.wrapInput {
-  display: flex;
-  align-items: center;
-  outline: none;
-  width: 100%;
-  height: 40px;
-  padding: 0 0 0 20px;
-  background: #ffffff;
-  border: 1px solid #d9d9d9;
-  border-radius: 35px;
-}
-
-.darkWrapInput {
-  display: flex;
-  align-items: center;
-  outline: none;
-  width: 100%;
-  height: 40px;
-  padding: 0 0 0 20px;
-  background: linear-gradient(135deg, rgba(20, 25, 35, 0.8) 0%, rgba(30, 35, 45, 0.8) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 35px;
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.fillWarpInput {
-  background: #366dff;
-}
-
-.fillIcon {
-  fill: #366dff;
-}
-
-.fillsendIconWhite {
-  background-color: #ffffff;
-}
-.fillsendIconGray {
-  background-color: #d9d9d9;
-}
+/* 불필요한 스타일 제거 */
 
 .input {
   width: 100%;
-  height: 90%;
+  height: 100%;
   background: none;
   border: none;
+  color: #e2e8f0;
+  font-size: 16px;
+  outline: none;
+  padding: 0;
 }
 
-.darkInput {
-  width: 100%;
-  height: 90%;
+.input::placeholder {
+  color: #94a3b8;
+}
+
+/* 아이콘 스타일 */
+.micButton {
   background: none;
   border: none;
-  color: #ffffff;
-  font-size: 14px;
-}
-
-.darkInput::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  position: absolute;
+  bottom: 1vh;
+  right: 2vw;
 }
 
 .micIcon {
-  width: 25px;
-  height: 25px;
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: brightness(0) invert(1);
 }
 
-.darkMicIcon {
-  width: 25px;
-  height: 25px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  padding: 8px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+.topIcons {
+  padding-top:20px;
+  position: fixed;
+  top: 2vh;
+  right: 2vw;
+  display: flex;
+  z-index: 1000;
 }
 
-.darkMicIcon:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
+.historyButton, .closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.icon {
-  width: 30px;
-  height: 30px;
-  fill: #366dff;
-  border-radius: 50%;
+.clockIcon {
+  width: 2rem;
+  height: 2rem;
+  filter: brightness(0) invert(1);
 }
 
-.sendIcon {
-  width: 30px;
-  height: 30px;
-  fill: #366dff;
-  border-radius: 50%;
-}
-
-.darkSendIcon {
-  width: 30px;
-  height: 30px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  padding: 8px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-}
-
-.darkSendIcon:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
-}
-
-.sendIcon:active {
-  width: 30px;
-  height: 26px;
-  fill: #ffffff;
-  background-color: #366dff;
-  border-radius: 50%;
+.closeIcon {
+  width: 1.7rem;
+  height: 1.7rem;
+  filter: brightness(0) invert(1);
 }
 
 .skeletonContainer {
@@ -184,6 +125,8 @@
   background: #ffffff;
   border-radius: 35px;
 }
+
+/* 아이콘 관련 스타일 제거 */
 
 .mmss {
   margin-left: 5px;

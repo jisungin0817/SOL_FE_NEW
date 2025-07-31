@@ -89,9 +89,9 @@
 }
 
 .darkAiRing {
-  width: 85%;
-  height: 85%;
-  border: 2px solid transparent;
+  width: 65%;
+  height: 65%;
+  border: 1px solid transparent;
   border-radius: 50%;
   background: conic-gradient(from 0deg, #06b6d4, #3b82f6, #8b5cf6, #06b6d4);
   background-clip: padding-box;

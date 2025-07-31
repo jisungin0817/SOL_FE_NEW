@@ -31,6 +31,21 @@
   margin: 0 5px;
 }
 
+.darkCard {
+  scroll-snap-align: center;
+  box-sizing: border-box;
+  min-width: 40%;
+  height: 18vh;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 0 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .cardIcon {
   width: 30px;
   height: 30px;
@@ -50,6 +65,14 @@
   margin: 0 5px;
 }
 
+.darkSkeletonCard {
+  min-width: 40%;
+  height: 18vh;
+  background: #21262d;
+  border-radius: 16px;
+  margin: 0 5px;
+}
+
 .cardText {
   display: flex;
   align-items: center;
@@ -57,7 +80,17 @@
   font-size: 16px;
   font-weight: bold;
   line-height: 110%;
-  color: var(--color-gray);
+  color: white;
+}
+
+.darkCardText {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 110%;
+  color: white;
 }
 
 .largeText {

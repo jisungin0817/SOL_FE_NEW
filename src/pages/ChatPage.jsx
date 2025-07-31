@@ -7,13 +7,14 @@ import { getSpeech } from '../utils/getSpeech';
 import { initStopwatchRef, resetClock, startClock } from '../utils/Stopwatch';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import styles from './ChatPage.module.css';
+import welcomeLogo from '../assets/images/welcome_logo.png';
 
 const ChatPage = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
   
   const [chatListData, setChatListData] = useState([]);
-  const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
   const [isMsgLoading, setIsMsgLoading] = useState(false);
   const isMsgLoadingRef = useRef(false);
   const isMsgTextingRef = useRef(false);
@@ -51,8 +52,8 @@ const ChatPage = () => {
     setTimeout(scrollToBottom, 100);
 
     try {
-      // SSE API 호출
-      const response = await fetch('http://m1.geniemars.kt.co.kr:10665/v1/chat/completions', {
+      // SSE API 호출 (webpack 프록시를 통해)
+      const response = await fetch('/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,13 +102,23 @@ const ChatPage = () => {
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
             
+            console.log('SSE 데이터 수신:', data); // 디버깅용 로그
+            
             if (data === '[DONE]') {
               // 스트림 완료
+              console.log('SSE 스트림 완료');
+              
+              // 스트림 완료 - 누적된 텍스트 유지
+              console.log('스트림 완료 - 누적된 텍스트 유지');
+              
+              setIsMsgLoading(false);
+              isMsgLoadingRef.current = false;
               break;
             }
 
             try {
               const parsed = JSON.parse(data);
+              console.log('파싱된 SSE 데이터:', parsed); // 디버깅용 로그
               
               // 백엔드에서 오는 메시지 타입에 따라 처리
               if (parsed.type === 'loading') {
@@ -121,9 +132,19 @@ const ChatPage = () => {
                 setIsMsgLoading(true);
                 isMsgLoadingRef.current = true;
               } else if (parsed.type === 'answer' && parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
-                // 답변 메시지 처리
+                // 기존 JSON 포맷 답변 메시지 처리
                 const content = parsed.choices[0].delta.content;
+                console.log('기존 포맷 답변 내용:', content);
+              } else if (parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
+                // OpenAI 형식 응답 처리 (테스트용) - append 방식
+                const content = parsed.choices[0].delta.content;
+                console.log('OpenAI 포맷 답변 내용:', content);
                 
+                // 로딩 상태 유지 (스트림 진행 중)
+                setIsMsgLoading(true);
+                isMsgLoadingRef.current = true;
+                
+                // append 방식으로 누적
                 setChatListData(prev => {
                   const newData = [...prev];
                   let lastMsg = newData[newData.length - 1];
@@ -137,16 +158,12 @@ const ChatPage = () => {
                     };
                     newData.push(lastMsg);
                   } else {
-                    // 기존 답변에 텍스트 추가
+                    // 기존 답변에 텍스트 추가 (append)
                     lastMsg.main_answer[0].text += content;
                   }
                   
                   return newData;
                 });
-                
-                // 로딩 상태 해제
-                setIsMsgLoading(false);
-                isMsgLoadingRef.current = false;
                 
                 setTimeout(scrollToBottom, 50);
               }
@@ -160,11 +177,20 @@ const ChatPage = () => {
     } catch (error) {
       console.error('SSE API 통신 에러:', error);
       
+      // CORS 에러인지 확인
+      let errorMessage = '죄송합니다. 일시적인 오류가 발생했습니다. 다시 시도해주세요.';
+      
+      if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
+        errorMessage = '서버 연결에 문제가 있습니다. 네트워크 연결을 확인해주세요.';
+      } else if (error.message.includes('timeout')) {
+        errorMessage = '요청 시간이 초과되었습니다. 다시 시도해주세요.';
+      }
+      
       // 에러 메시지 표시
       const errorMsg = {
         speaker: 'chatbot',
         type: 'answer',
-        main_answer: [{ text: '죄송합니다. 일시적인 오류가 발생했습니다. 다시 시도해주세요.' }]
+        main_answer: [{ text: errorMessage }]
       };
       
       // 새로운 대화 시작 - 사용자 메시지와 에러 메시지만 유지
@@ -227,51 +253,72 @@ const ChatPage = () => {
     }
   }, [chatListData]);
 
-  // 슬라이드 애니메이션 완료 후 웰컴 메시지 표시
+  // 웰컴메시지 상태 관리
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowWelcomeMessage(true);
-      const welcomeMessage = {
-        speaker: 'chatbot',
-        type: 'answer',
-        main_answer: [{ text: '안녕하세요! 저는 AI 어시스턴트입니다. 무엇을 도와드릴까요?' }]
-      };
-      setChatListData([welcomeMessage]);
-      chatListDataRef.current = [welcomeMessage];
-    }, 600); // 슬라이드 애니메이션(0.5s) + 여유시간(0.1s)
-
-    return () => clearTimeout(timer);
+    setShowWelcomeMessage(true);
   }, []);
 
   const handleCloseChat = () => {
+    setShowWelcomeMessage(false);
     navigate('/');
   };
 
   return (
     <div className={`${styles.chatPage} ${isDarkMode ? styles.darkMode : ''}`}>
-      <div className={styles.chatContainer}>
-        <ChatListNew
-          isOpen={true} // Always open on ChatPage
-          onClose={() => navigate('/')} // X 버튼 클릭 시 메인 페이지로 이동
-          data={chatListData}
-          setData={setChatListData}
-          handleIsMsgLoading={setIsMsgLoading}
-          isMsgLoadingRef={isMsgLoadingRef}
-          isMsgTextingRef={isMsgTextingRef}
-          sendMsgToBotByComponent={sendMsgToBotByComponent}
-          isPageNew={true}
+      {/* 웰컴메시지 */}
+      {showWelcomeMessage && chatListData.length === 0 && (
+        <div className={styles.welcomeMessage}>
+          <div className={styles.logoContainer}>
+            <img src={welcomeLogo} alt="SOL AI Logo" className={styles.logo} />
+          </div>
+          <div className={styles.welcomeText}>
+            <div className={styles.welcomeTitle}>궁금증을 풀어드릴</div>
+            <div className={styles.welcomeSubtitle}>SOL AI에요</div>
+          </div>
+          <div className={styles.userGreeting}>
+            <div className={styles.greetingText}>안녕하세요. 김신한님!</div>
+            <div className={styles.helpText}>무엇을 도와드릴까요?</div>
+          </div>
+        </div>
+      )}
+      
+      {chatListData.length > 0 && (
+        <div className={styles.chatContainer}>
+          {chatListData.map((item, index) => (
+            <div key={index} className={styles.messageContainer}>
+              {item.speaker === 'user' || item.type === 'user_message' ? (
+                <div className={styles.userMessage}>
+                  {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : item.msg || ""}
+                </div>
+              ) : item.type === 'answer' ? (
+                <div className={styles.aiMessage}>
+                  <div className={styles.searchingIcon}></div>
+                  {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : ""}
+                </div>
+              ) : item.type === 'response' ? (
+                <div className={styles.aiResponse}>
+                  {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : ""}
+                </div>
+              ) : (
+                <div className={styles.aiMessage}>
+                  {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : ""}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+              <ChatInput
+          onSendButtonClick={handleSendButtonClick}
+          isLoading={isMsgLoading}
+          userInputRef={userInputRef}
+          mic={mic}
+          handleMicClick={handleMicClick}
+          browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
+          sttTimer={sttTimer}
+          isChatOpen={true}
+          onClose={handleCloseChat}
         />
-      </div>
-      <ChatInput
-        onSendButtonClick={handleSendButtonClick}
-        isLoading={isMsgLoading}
-        userInputRef={userInputRef}
-        mic={mic}
-        handleMicClick={handleMicClick}
-        browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
-        sttTimer={sttTimer}
-        isChatOpen={true}
-      />
     </div>
   );
 };

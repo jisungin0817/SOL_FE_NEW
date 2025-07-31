@@ -3,6 +3,9 @@ import styles from "./css/chatInput.module.css";
 import { RiArrowUpLine, RiMicLine } from "react-icons/ri";
 import { ReactComponent as VoiceSvg } from "../../assets/images/voice.svg";
 import { useTheme } from "../ThemeContext";
+import clockIcon from "../../assets/images/clock.png";
+import closeIcon from "../../assets/images/close-window.png";
+import micIcon from "../../assets/images/mic.png";
 
 const ChatInput = (props) => {
   const {
@@ -14,6 +17,7 @@ const ChatInput = (props) => {
     browserSupportsSpeechRecognition,
     sttTimer,
     isChatOpen,
+    onClose,
   } = props;
   const { isDarkMode } = useTheme();
   const [placeholder, setPlaceholder] = useState("");
@@ -64,58 +68,30 @@ const ChatInput = (props) => {
           </div>
         </div>
       ) : (
-        <div className={styles.wrap}>
-          <button onClick={handleMicClick}>
-            <RiMicLine
-              className={`${isDarkMode ? styles.darkMicIcon : styles.micIcon} ${mic ? styles.fillmicIcon : ""}`}
-            />
-          </button>
-          <div
-            className={`${isDarkMode ? styles.darkWrapInput : styles.wrapInput} ${mic ? styles.fillWarpInput : ""}`}
-          >
-            {mic && (
-              <>
-                <VoiceSvg />
-                <span className={`${styles.mmss}`}>{sttTimer}</span>
-              </>
-            )}
-
+        <>
+          <div className={styles.wrap}>
             <input
-              style={mic ? { display: "none" } : {}}
               ref={userInputRef}
-              className={`${isDarkMode ? styles.darkInput : styles.input}`}
+              className={styles.input}
               type='text'
-              placeholder={placeholder}
+              placeholder="궁금한점을 물어볼 수 있어요."
               onKeyDown={_onKeyDown}
-              onFocus={() => {
-                // 입력창 포커스 시 채팅창 열기
-                if (!isChatOpen) {
-                  onSendButtonClick("");
-                }
-              }}
-              onClick={() => {
-                // 입력창 클릭 시 채팅창 열기
-                if (!isChatOpen) {
-                  onSendButtonClick("");
-                }
-              }}
             />
-            <button
-              onClick={() => {
-                console.log('[ChatInput] 전송 버튼 클릭');
-                console.log('[ChatInput] 입력값:', userInputRef.current.value);
-                onSendButtonClick(userInputRef.current.value);
-              }}
-            >
-              {/* <QuestionSvg className={styles.icon} /> */}
-              <RiArrowUpLine
-                className={`${isDarkMode ? styles.darkSendIcon : styles.sendIcon} ${
-                  mic ? styles.fillsendIconWhite : styles.fillsendIconGray
-                }`}
-              />
+            <button className={styles.micButton}>
+              <img src={micIcon} alt="마이크" className={styles.micIcon} />
             </button>
           </div>
-        </div>
+          
+          {/* 우측 상단 아이콘들 */}
+          <div className={styles.topIcons}>
+            <button className={styles.historyButton}>
+              <img src={clockIcon} alt="히스토리" className={styles.clockIcon} />
+            </button>
+            <button className={styles.closeButton} onClick={onClose}>
+              <img src={closeIcon} alt="닫기" className={styles.closeIcon} />
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

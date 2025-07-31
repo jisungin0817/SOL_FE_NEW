@@ -1,0 +1,111 @@
+.portfolioContainer {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.portfolioContainer:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.portfolioHeader {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.portfolioTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 12px 0;
+  text-align: left;
+}
+
+.portfolioDescription {
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  text-align: left;
+}
+
+.chartArea {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.barChart {
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
+
+.barContainer {
+  display: flex;
+  height: 24px;
+  border-radius: 6px;
+  overflow: visible;
+  position: relative;
+  margin-top: 25px;
+}
+
+.barSegment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+  min-width: 30px;
+}
+
+.barSegment:hover {
+  filter: brightness(1.1);
+}
+
+.percentageLabel {
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 3px 6px;
+  border-radius: 3px;
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.legend {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendColor {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legendText {
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 500;
+} 

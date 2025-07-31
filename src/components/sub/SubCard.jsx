@@ -8,34 +8,28 @@ const SubCard = ({ data, onAction }) => {
     }
   };
 
+  // data가 배열인 경우 처리
+  const cardData = Array.isArray(data) ? data : [data];
+
   return (
-    <div className={styles.cardContainer}>
-      <div className={styles.cardHeader}>
-        <h3 className={styles.cardTitle}>{data.title}</h3>
-        {data.image && (
-          <div className={styles.cardImage}>
-            <img src={data.image} alt={data.title} />
+    <div className={styles.productCardContainer}>
+      {cardData.map((product, index) => (
+        <div key={index} className={styles.productCard}>
+          <div className={styles.productInfo}>
+            <div className={styles.productName}>{product.product_name}</div>
+            {product.product_sub_name && (
+              <div className={styles.productSubName}>{product.product_sub_name}</div>
+            )}
           </div>
-        )}
-      </div>
-      
-      <div className={styles.cardContent}>
-        <p className={styles.cardText}>{data.content}</p>
-      </div>
-      
-      {data.actions && data.actions.length > 0 && (
-        <div className={styles.cardActions}>
-          {data.actions.map((action, index) => (
-            <button
-              key={index}
-              className={styles.actionButton}
-              onClick={() => handleActionClick(action)}
-            >
-              {action.text}
-            </button>
-          ))}
+          
+          <button
+            className={styles.productButton}
+            onClick={() => handleActionClick(product.action)}
+          >
+            {product.button_text}
+          </button>
         </div>
-      )}
+      ))}
     </div>
   );
 };
