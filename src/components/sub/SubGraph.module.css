@@ -68,14 +68,14 @@
 }
 
 .percentageLabel {
+  border: 1.5px solid #51678d;
   color: white;
   font-size: 10px;
   font-weight: 600;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 2px 5px;
-  border-radius: 3px;
+  padding: 5px 5px;
+  border-radius: 8px;
   position: absolute;
-  top: -26px;
+  top: -35px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;

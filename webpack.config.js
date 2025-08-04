@@ -14,11 +14,8 @@ module.exports = {
     compress: true,
     proxy: {
       '/api': {
-        target: 'https://m1.geniemars.kt.co.kr:10665',
+        target: 'http://localhost:3002',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        },
         secure: false,
         logLevel: 'debug',
         onProxyReq: (proxyReq, req, res) => {
@@ -26,6 +23,11 @@ module.exports = {
         },
         onProxyRes: (proxyRes, req, res) => {
           console.log('프록시 응답:', proxyRes.statusCode);
+          // SSE 스트리밍을 위한 헤더 설정
+          if (req.url.includes('/chat/completions')) {
+            proxyRes.headers['Cache-Control'] = 'no-cache, no-transform';
+            proxyRes.headers['X-Accel-Buffering'] = 'no';
+          }
         }
       }
     }

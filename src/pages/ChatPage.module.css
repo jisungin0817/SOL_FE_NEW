@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .darkMode {
@@ -17,13 +17,37 @@
 .chatContainer {
   flex: 1;
   position: relative;
-  z-index: 15;
+  z-index: 5;
   padding: 20px;
   padding-top: 100px;
+  padding-bottom: 120px; /* ChatInput 높이만큼 여백 */
   display: flex;
   flex-direction: column;
   gap: 15px;
   min-height: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+  
+  /* 스크롤바 스타일링 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.chatContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.chatContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .messageContainer {
@@ -133,9 +157,17 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  z-index: 10;
+  z-index: 15;
   width: 100%;
   padding: 0 1rem;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.welcomeMessage.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  display: none;
 }
 
 .logoContainer {
@@ -165,7 +197,7 @@
 }
 
 .userGreeting {
-  color: #94a3b8;
+  color: #6e7a8c;
 }
 
 .greetingText, .helpText {
