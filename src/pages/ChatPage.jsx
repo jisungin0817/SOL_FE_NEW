@@ -29,10 +29,13 @@ const ChatPage = () => {
   const scrollToBottom = () => {
     const chatContainer = document.querySelector(`.${styles.chatContainer}`);
     if (chatContainer) {
-      chatContainer.scrollTo({
-        top: chatContainer.scrollHeight,
-        behavior: 'smooth'
-      });
+      // 강제로 스크롤을 맨 아래로
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      
+      // 추가로 한 번 더 확실하게
+      setTimeout(() => {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 100);
     }
   };
 
@@ -278,8 +281,9 @@ const ChatPage = () => {
       <div style={{ 
         position: 'relative', 
         width: '100%', 
-        height: '100vh',
-        overflow: 'hidden'
+        height: 'calc(100vh - 120px)', /* ChatInput 높이만큼 제외 */
+        overflow: 'hidden',
+        paddingTop: '20px' /* 상단 여백 추가 */
       }}>
         {/* 웰컴메시지 - 대화가 없을 때만 표시 */}
         {showWelcomeMessage && chatListData.length === 0 && (
@@ -339,7 +343,12 @@ const ChatPage = () => {
                 </div>
               ) : item.type === 'component' ? (
                 /* 컴포넌트 렌더링 - 별도 메시지로 분리 */
-                <div style={{ width: '100%', marginTop: '10px' }}>
+                <div style={{ 
+                  width: '100%', 
+                  marginTop: '10px',
+                  overflow: 'hidden',
+                  maxWidth: '100%'
+                }}>
                   {item.sub_data && Array.isArray(item.sub_data) && item.sub_data.length > 0 && (
                     <SubDataRenderer 
                       data={item.sub_data} 

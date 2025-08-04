@@ -27,7 +27,11 @@ const SubDataRenderer = ({ data, onAction }) => {
   };
 
   return (
-    <div>
+    <div style={{ 
+      width: '100%', 
+      overflow: 'hidden',
+      maxWidth: '100%'
+    }}>
       {data.map((item, index) => renderSubComponent(item, index))}
     </div>
   );

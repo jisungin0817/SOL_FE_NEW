@@ -16,6 +16,8 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 .accountCard::before {
