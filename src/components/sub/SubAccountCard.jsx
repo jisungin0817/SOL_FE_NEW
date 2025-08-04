@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SubCard.module.css';
+import styles from './SubAccountCard.module.css';
 import shinhanLogo from '../../assets/images/shinhan_logo.png';
 
 const SubAccountCard = ({ data, onAction }) => {

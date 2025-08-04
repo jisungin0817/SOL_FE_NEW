@@ -1,10 +1,10 @@
 .cardContainer {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(51, 65, 85, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 20px;
   margin: 12px 0;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   position: relative;
@@ -35,7 +35,7 @@
 .cardTitle {
   font-size: 20px;
   font-weight: 700;
-  color: #1f2937;
+  color: white;
   margin: 0 0 12px 0;
   letter-spacing: -0.025em;
 }
@@ -61,7 +61,7 @@
 .cardText {
   font-size: 15px;
   line-height: 1.7;
-  color: #4b5563;
+  color: #e2e8f0;
   margin: 0;
   font-weight: 400;
 }
@@ -120,191 +120,38 @@
   align-items: center;
   margin-bottom: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
 
 .accountInfo:last-child {
+  align-items: flex-start;
   border-bottom: none;
   margin-bottom: 0;
 }
 
 .accountInfo:hover {
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(59, 130, 246, 0.1);
   border-radius: 8px;
   padding: 12px 8px;
   margin: 0 -8px 12px -8px;
 }
 
 .label {
-  color: #6b7280;
+  color: #94a3b8;
   font-size: 14px;
   font-weight: 500;
 }
 
 .value {
-  color: #1f2937;
+  color: white;
   font-size: 15px;
   font-weight: 600;
 }
 
-/* 다크 모드 지원 */
-@media (prefers-color-scheme: dark) {
-  .cardContainer {
-    background: rgba(17, 24, 39, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: white;
-  }
-  
-  .cardTitle {
-    color: #f9fafb;
-  }
-  
-  .cardText {
-    color: #d1d5db;
-  }
-  
-  .label {
-    color: #9ca3af;
-  }
-  
-  .value {
-    color: #f3f4f6;
-  }
-  
-  .accountInfo {
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .accountInfo:hover {
-    background: rgba(59, 130, 246, 0.1);
-  }
-}
 
-/* Account Card 스타일 */
-.accountCardContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  text-align: left;
-}
 
-.accountCard {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(51, 65, 85, 0.8));
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
-  text-align: left;
-}
 
-.accountCard:hover {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.9));
-  border-color: rgba(59, 130, 246, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-
-.accountHeader {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-  text-align: left;
-  justify-content: flex-start;
-}
-
-.bankLogo {
-  flex-shrink: 0;
-}
-
-.bankLogoImage {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.logoCircle {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.logoSymbol {
-  color: white;
-  font-weight: 700;
-  font-size: 18px;
-  z-index: 2;
-}
-
-.logoArrow {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 12px;
-  height: 12px;
-  border: 2px solid white;
-  border-radius: 50%;
-  border-left: none;
-  border-bottom: none;
-  transform: rotate(45deg);
-}
-
-.accountInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  text-align: left !important;
-}
-
-.accountName {
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.4;
-  text-align: left !important;
-}
-
-.accountNumber {
-  color: #94a3b8;
-  font-size: 14px;
-  font-weight: 400;
-  margin-top: 2px;
-  text-align: left !important;
-}
-
-.accountBalance {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.balanceAmount {
-  color: white;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.balanceLabel {
-  color: #94a3b8;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: right;
-}
 
 /* Product Card 스타일 */
 .productCardContainer {
@@ -391,13 +238,7 @@
     width: 100%;
   }
   
-  .accountCard {
-    padding: 16px;
-  }
   
-  .balanceAmount {
-    font-size: 20px;
-  }
   
   .productCard {
     padding: 16px;

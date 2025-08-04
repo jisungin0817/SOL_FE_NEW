@@ -72,6 +72,19 @@ const ChatListNew = (props) => {
                         sendMsgToBotByComponent={sendMsgToBotByComponent}
                         isPageNew={isPageNew}
             />
+        } else if(item.type === "api_response"){
+            console.log("ChatListNew - API Response 렌더링");
+            return (
+                <div style={{
+                    color: 'white',
+                    fontSize: '16px',
+                    paddingLeft: '10px',
+                    marginTop: '-5px',
+                    marginBottom: '10px'
+                }}>
+                    {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : ""}
+                </div>
+            );
         } else {
             console.log("ChatListNew - AIChatBoxLoading 렌더링");
             //로딩을 나눠야 하나??
@@ -150,6 +163,8 @@ const ChatListNew = (props) => {
                 {/* 스크롤 */}
                 <div ref={scrollEndRef}> </div>
             </div>
+            
+
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './SubPortfolioChart.module.css';
+import styles from './SubGraph.module.css';
 
-const SubPortfolioChart = ({ data }) => {
+const SubGraph = ({ data }) => {
   const { title, description, portfolio } = data;
   
   return (
@@ -50,4 +50,4 @@ const SubPortfolioChart = ({ data }) => {
   );
 };
 
-export default SubPortfolioChart; 
+export default SubGraph; 

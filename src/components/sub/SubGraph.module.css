@@ -1,8 +1,7 @@
 .portfolioContainer {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
@@ -20,17 +19,17 @@
 }
 
 .portfolioTitle {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: white;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   text-align: left;
 }
 
 .portfolioDescription {
   color: #e2e8f0;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.5;
   margin: 0;
   text-align: left;
 }
@@ -43,7 +42,6 @@
 
 .barChart {
   border-radius: 12px;
-  padding: 20px;
   position: relative;
 }
 
@@ -71,13 +69,13 @@
 
 .percentageLabel {
   color: white;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   background: rgba(0, 0, 0, 0.8);
-  padding: 3px 6px;
+  padding: 2px 5px;
   border-radius: 3px;
   position: absolute;
-  top: -28px;
+  top: -26px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -106,6 +104,6 @@
 
 .legendText {
   color: #e2e8f0;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
 } 

@@ -1,33 +1,15 @@
 .previewPage {
   min-height: 100vh;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 60%),
-    radial-gradient(circle at 60% 60%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-    linear-gradient(135deg, #050709 0%, #0f1419 50%, #070a0e 100%);
+  background: #0B111D;
   padding: 32px;
   display: flex;
   flex-direction: column;
   gap: 32px;
   color: #e2e8f0;
   position: relative;
-  overflow-x: hidden;
 }
 
-.previewPage::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-}
+
 
 
 
@@ -102,7 +84,7 @@
 }
 
 .previewControls button.active {
-  background: linear-gradient(135deg, #3b82f6, #bfffc0);
+  background: linear-gradient(135deg, #1A73FC, #63D8F7);
   color: white;
   border-color: transparent;
   box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
@@ -159,7 +141,7 @@
 }
 
 .componentPreview h3 {
-  font-size: 20px;
+  font-size: 15px;
   color: #e2e8f0;
   font-weight: 600;
 }

@@ -41,6 +41,18 @@
   font-size: large;
   color: #ffffff;
 }
+
+.plainText {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: white !important;
+  font-size: 16px !important;
+}
 .userMessage {
   font-size: large;
   font-weight: bold;

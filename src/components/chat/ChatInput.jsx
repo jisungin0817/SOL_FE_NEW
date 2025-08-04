@@ -50,49 +50,34 @@ const ChatInput = (props) => {
   return (
     <div
       className={`${
-        isLoading
-          ? isDarkMode
-            ? styles.darkSkeletonContainer
-            : styles.skeletonContainer
-          : isDarkMode
+        isDarkMode
           ? styles.darkContainer
           : styles.container
       }`}
     >
-      {isLoading ? (
-        <div className={styles.wrap}>
-          <span className={styles.skeletonIcon} />
-
-          <div className={styles.skeletonInput}>
-            <span className={styles.skeletonIcon} />
-          </div>
-        </div>
-      ) : (
-        <>
-          <div className={styles.wrap}>
-            <input
-              ref={userInputRef}
-              className={styles.input}
-              type='text'
-              placeholder="궁금한점을 물어볼 수 있어요."
-              onKeyDown={_onKeyDown}
-            />
-            <button className={styles.micButton}>
-              <img src={micIcon} alt="마이크" className={styles.micIcon} />
-            </button>
-          </div>
-          
-          {/* 우측 상단 아이콘들 */}
-          <div className={styles.topIcons}>
-            <button className={styles.historyButton}>
-              <img src={clockIcon} alt="히스토리" className={styles.clockIcon} />
-            </button>
-            <button className={styles.closeButton} onClick={onClose}>
-              <img src={closeIcon} alt="닫기" className={styles.closeIcon} />
-            </button>
-          </div>
-        </>
-      )}
+      <div className={styles.wrap}>
+        <input
+          ref={userInputRef}
+          className={styles.input}
+          type='text'
+          placeholder="궁금한점을 물어볼 수 있어요."
+          onKeyDown={_onKeyDown}
+          disabled={isLoading}
+        />
+        <button className={styles.micButton} disabled={isLoading}>
+          <img src={micIcon} alt="마이크" className={styles.micIcon} />
+        </button>
+      </div>
+      
+      {/* 우측 상단 아이콘들 */}
+      <div className={styles.topIcons}>
+        <button className={styles.historyButton}>
+          <img src={clockIcon} alt="히스토리" className={styles.clockIcon} />
+        </button>
+        <button className={styles.closeButton} onClick={onClose}>
+          <img src={closeIcon} alt="닫기" className={styles.closeIcon} />
+        </button>
+      </div>
     </div>
   );
 };

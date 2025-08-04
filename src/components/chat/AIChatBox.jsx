@@ -96,66 +96,100 @@ const AIChatBox = (props) => {
 
   return (
     <div key={"AIChatBox"} className={styles.aiBox}>
-      <div className={isDarkMode ? styles.darkAiIcon : styles.aiIcon}>
-        {isDarkMode ? (
-          <div className={styles.darkAiAvatar}>
-            <div className={styles.darkAiRing}></div>
-            <div className={styles.darkAiGlow}></div>
-          </div>
-        ) : (
-          <BearIcon />
-        )}
-        {aiStatusIcon()}
-      </div>
+      {!msg.isPlainText && (
+        <div className={isDarkMode ? styles.darkAiIcon : styles.aiIcon}>
+          {isDarkMode ? (
+            <div className={styles.darkAiAvatar}>
+              <div className={styles.darkAiRing}></div>
+              <div className={styles.darkAiGlow}></div>
+            </div>
+          ) : (
+            <BearIcon />
+          )}
+          {!msg.isPlainText && aiStatusIcon()}
+        </div>
+      )}
       
-      <div className={`${isDarkMode ? styles.darkAiMessage : styles.aiMessage} ${
-        fontSize === "large" && styles.largeText
-      }`}>
-        {msg && msg.type === 'loading' ? (
-          <div className={styles.loadingMessage}>
-            <LoadingSvg className={styles.loadingIcon} />
-            <span>응답을 준비하고 있습니다...</span>
-          </div>
-        ) : msg && msg.main_answer && msg.main_answer.length > 0 ? (
-          (() => {
-            const textArray = msg.main_answer
-              .filter(item => item && typeof item === 'object' && item.text)
-              .map(item => String(item.text || ""))
-              .filter(text => text.trim() !== ""); // 빈 문자열 필터링
-            
-            // 텍스트가 없으면 로딩 표시
-            if (textArray.length === 0) {
+      {!msg.isPlainText && (
+        <div className={`${isDarkMode ? styles.darkAiMessage : styles.aiMessage} ${
+          fontSize === "large" && styles.largeText
+        }`}>
+          {msg && msg.type === 'loading' ? (
+            <div className={styles.loadingMessage}>
+              <LoadingSvg className={styles.loadingIcon} />
+              <span>응답을 준비하고 있습니다...</span>
+            </div>
+          ) : msg && msg.main_answer && msg.main_answer.length > 0 ? (
+            (() => {
+              const textArray = msg.main_answer
+                .filter(item => item && typeof item === 'object' && item.text)
+                .map(item => String(item.text || ""))
+                .filter(text => text.trim() !== ""); // 빈 문자열 필터링
+              
+              // 텍스트가 없으면 로딩 표시
+              if (textArray.length === 0) {
+                return (
+                  <div className={styles.loadingMessage}>
+                    <LoadingSvg className={styles.loadingIcon} />
+                    <span>응답을 준비하고 있습니다...</span>
+                  </div>
+                );
+              }
+              
               return (
-                <div className={styles.loadingMessage}>
-                  <LoadingSvg className={styles.loadingIcon} />
-                  <span>응답을 준비하고 있습니다...</span>
-                </div>
+                <ReactTyped
+                  strings={textArray}
+                  typeSpeed={50}
+                  backSpeed={0}
+                  backDelay={0}
+                  loop={false}
+                  showCursor={false}
+                  cursorChar="|"
+                  onComplete={() => {
+                    console.log("타이핑 완료");
+                    setIsTypingComplete(true);
+                  }}
+                />
               );
-            }
-            
-            return (
-              <ReactTyped
-                strings={textArray}
-                typeSpeed={50}
-                backSpeed={0}
-                backDelay={0}
-                loop={false}
-                showCursor={false}
-                cursorChar="|"
-                onComplete={() => {
-                  console.log("타이핑 완료");
-                  setIsTypingComplete(true);
-                }}
-              />
-            );
-          })()
-        ) : (
-          <div className={styles.loadingMessage}>
-            <LoadingSvg className={styles.loadingIcon} />
-            <span>응답을 준비하고 있습니다...</span>
-          </div>
-        )}
-      </div>
+            })()
+          ) : (
+            <div className={styles.loadingMessage}>
+              <LoadingSvg className={styles.loadingIcon} />
+              <span>응답을 준비하고 있습니다...</span>
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* isPlainText일 때는 말풍선 없이 순수 텍스트만 표시 (스트리밍 효과 포함) */}
+      {msg.isPlainText && msg.main_answer && msg.main_answer.length > 0 && (
+        <div style={{
+          color: 'white',
+          fontSize: '16px',
+          paddingLeft: '10px',
+          marginTop: '-5px',
+          marginBottom: '10px'
+        }}>
+          <ReactTyped
+            strings={[msg.main_answer[0].text || ""]}
+            typeSpeed={100}
+            backSpeed={0}
+            backDelay={0}
+            loop={false}
+            showCursor={false}
+            cursorChar="|"
+            onComplete={() => {
+              console.log("무엇을 도와드릴까요? 스트리밍 완료");
+              // 타이핑 완료 시 로딩 상태 해제
+              if (msg.isPlainText) {
+                setTimeout(() => {
+                  handleIsMsgLoading(false);
+                }, 500); // 0.5초 후 로딩 상태 해제
+              }
+            }}
+          />
+        </div>
+      )}
       
       {showCard && isTypingComplete && (
         cardRef.current.map((item, index) => (

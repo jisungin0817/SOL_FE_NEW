@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../components/ThemeContext';
 import ChatListNew from '../components/chat/ChatListNew';
@@ -46,160 +47,149 @@ const ChatPage = () => {
       main_answer: [{ text: data.msg }]
     };
 
+    flushSync(() => {
     setChatListData([userMsg]);
     chatListDataRef.current = [userMsg];
+    });
     
     setTimeout(scrollToBottom, 100);
 
     try {
-      // SSE API 호출 (webpack 프록시를 통해)
+      // 백엔드 API 통신
       const response = await fetch('/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive',
         },
         body: JSON.stringify({
-          "model": "/home/work/llm/qwen3-30b",
-          "messages": [
+          model: "gpt-4",
+          messages: [
             {
-              "role": "system",
-              "content": "You are a helpful assistant."
-            },
-            {
-              "role": "user",
-              "content": data.msg
+              role: "user",
+              content: data.msg
             }
           ],
-          "max_tokens": 1024,
-          "temperature": 0.7,
-          "top_p": 1.0,
-          "n": 1,
-          "stream": true,
-          "stop": null
+          stream: true,
+          max_tokens: 1000,
+          temperature: 0.7
         })
       });
 
       if (!response.ok) {
-        throw new Error(`API 요청 실패: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // SSE 스트림 처리
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let buffer = '';
+      let hasLoadingStarted = false;
+      let hasComponentResponse = false;
 
       while (true) {
         const { done, value } = await reader.read();
-        
         if (done) break;
 
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
-            
-            console.log('SSE 데이터 수신:', data); // 디버깅용 로그
-            
             if (data === '[DONE]') {
-              // 스트림 완료
-              console.log('SSE 스트림 완료');
-              
-              // 스트림 완료 - 누적된 텍스트 유지
-              console.log('스트림 완료 - 누적된 텍스트 유지');
-              
-              setIsMsgLoading(false);
-              isMsgLoadingRef.current = false;
+              console.log('스트림 완료');
               break;
             }
 
             try {
               const parsed = JSON.parse(data);
-              console.log('파싱된 SSE 데이터:', parsed); // 디버깅용 로그
               
-              // 백엔드에서 오는 메시지 타입에 따라 처리
-              if (parsed.type === 'loading') {
-                // 로딩 메시지 추가
+              // sub_data가 loading이면 "찾는중..." 표시
+              if (parsed.sub_data && parsed.sub_data.type === 'loading' && !hasLoadingStarted) {
+                hasLoadingStarted = true;
                 const loadingMsg = {
                   speaker: 'chatbot',
-                  type: 'loading'
+                  type: 'loading',
+                  sub_data: parsed.sub_data
                 };
-                setChatListData(prev => [...prev, loadingMsg]);
-                chatListDataRef.current = [...chatListDataRef.current, loadingMsg];
-                setIsMsgLoading(true);
-                isMsgLoadingRef.current = true;
-              } else if (parsed.type === 'answer' && parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
-                // 기존 JSON 포맷 답변 메시지 처리
-                const content = parsed.choices[0].delta.content;
-                console.log('기존 포맷 답변 내용:', content);
-              } else if (parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
-                // OpenAI 형식 응답 처리 (테스트용) - append 방식
-                const content = parsed.choices[0].delta.content;
-                console.log('OpenAI 포맷 답변 내용:', content);
+                flushSync(() => {
+                  setChatListData(prev => [...prev, loadingMsg]);
+                  chatListDataRef.current = [...chatListDataRef.current, loadingMsg];
+                  setIsMsgLoading(true);
+                  isMsgLoadingRef.current = true;
+                });
+              }
+              
+              // main_answer가 있으면 "찾는중..." 밑에 흰색 텍스트로 표시
+              if (parsed.main_answer && parsed.main_answer.length > 0) {
+                const textMsg = {
+                  speaker: 'chatbot',
+                  type: 'text_response',
+                  main_answer: parsed.main_answer
+                };
                 
-                // 로딩 상태 유지 (스트림 진행 중)
-                setIsMsgLoading(true);
-                isMsgLoadingRef.current = true;
+                flushSync(() => {
+                  setChatListData(prev => [...prev, textMsg]);
+                  chatListDataRef.current = [...chatListDataRef.current, textMsg];
+                });
+              }
+              
+              // sub_data에 컴포넌트가 있으면 다음 턴으로 넘어가기
+              if (parsed.sub_data && Array.isArray(parsed.sub_data) && parsed.sub_data.length > 0 && !hasComponentResponse) {
+                hasComponentResponse = true;
                 
-                // append 방식으로 누적
-                setChatListData(prev => {
-                  const newData = [...prev];
-                  let lastMsg = newData[newData.length - 1];
-                  
-                  // 마지막 메시지가 answer 타입이 아니면 새로 생성
-                  if (!lastMsg || lastMsg.type !== 'answer') {
-                    lastMsg = {
-                      speaker: 'chatbot',
-                      type: 'answer',
-                      main_answer: [{ text: content }]
-                    };
-                    newData.push(lastMsg);
-                  } else {
-                    // 기존 답변에 텍스트 추가 (append)
-                    lastMsg.main_answer[0].text += content;
-                  }
-                  
-                  return newData;
+                // 현재 로딩 상태 해제
+                flushSync(() => {
+                  setIsMsgLoading(false);
+                  isMsgLoadingRef.current = false;
                 });
                 
-                setTimeout(scrollToBottom, 50);
+                // 다음 턴으로 넘어가기 위해 새로운 대화 시작
+                const componentMsg = {
+                  speaker: 'chatbot',
+                  type: 'response',
+                  main_type: 'component',
+                  main_answer: [],
+                  sub_data: parsed.sub_data
+                };
+                
+                flushSync(() => {
+                  setChatListData(prev => [...prev, componentMsg]);
+                  chatListDataRef.current = [...chatListDataRef.current, componentMsg];
+                });
               }
+              
             } catch (e) {
-              console.log('SSE 데이터 파싱 에러:', e);
+              console.error('JSON 파싱 에러:', e);
             }
           }
         }
       }
       
-    } catch (error) {
-      console.error('SSE API 통신 에러:', error);
-      
-      // CORS 에러인지 확인
-      let errorMessage = '죄송합니다. 일시적인 오류가 발생했습니다. 다시 시도해주세요.';
-      
-      if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
-        errorMessage = '서버 연결에 문제가 있습니다. 네트워크 연결을 확인해주세요.';
-      } else if (error.message.includes('timeout')) {
-        errorMessage = '요청 시간이 초과되었습니다. 다시 시도해주세요.';
+      // API 통신 완료 후에도 로딩 상태가 남아있으면 해제
+      if (isMsgLoadingRef.current) {
+        flushSync(() => {
+          setIsMsgLoading(false);
+          isMsgLoadingRef.current = false;
+        });
       }
+    } catch (error) {
+      console.error('API 통신 에러:', error);
       
       // 에러 메시지 표시
       const errorMsg = {
         speaker: 'chatbot',
-        type: 'answer',
-        main_answer: [{ text: errorMessage }]
+        type: 'response',
+        main_type: 'text',
+        main_answer: [{ text: '죄송합니다. 일시적인 오류가 발생했습니다.' }]
       };
       
-      // 새로운 대화 시작 - 사용자 메시지와 에러 메시지만 유지
-      setChatListData([userMsg, errorMsg]);
-      chatListDataRef.current = [userMsg, errorMsg];
-    } finally {
-      setIsMsgLoading(false);
-      isMsgLoadingRef.current = false;
-      setTimeout(scrollToBottom, 100);
+      flushSync(() => {
+        setChatListData(prev => [...prev, errorMsg]);
+        chatListDataRef.current = [...chatListDataRef.current, errorMsg];
+        setIsMsgLoading(false);
+        isMsgLoadingRef.current = false;
+      });
     }
   };
 
@@ -290,13 +280,29 @@ const ChatPage = () => {
                 <div className={styles.userMessage}>
                   {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : item.msg || ""}
                 </div>
-              ) : item.type === 'answer' ? (
+              ) : item.type === 'loading' ? (
                 <div className={styles.aiMessage}>
                   <div className={styles.searchingIcon}></div>
+                  찾는중...
+                </div>
+              ) : item.type === 'text_response' ? (
+                <div style={{
+                  color: 'white',
+                  fontSize: '16px',
+                  paddingLeft: '10px',
+                  marginTop: '-5px',
+                  marginBottom: '10px'
+                }}>
                   {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : ""}
                 </div>
               ) : item.type === 'response' ? (
-                <div className={styles.aiResponse}>
+                <div style={{
+                  color: 'white',
+                  fontSize: '16px',
+                  paddingLeft: '10px',
+                  marginTop: '-5px',
+                  marginBottom: '10px'
+                }}>
                   {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : ""}
                 </div>
               ) : (
