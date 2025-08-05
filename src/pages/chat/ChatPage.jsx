@@ -348,6 +348,7 @@ const ChatPage = () => {
                        {item.main_answer.map((answer, idx) => (
                          <div key={idx}>
                            {answer.text}
+                           {/* TTS 기능은 유지하되 아이콘은 숨김 */}
                            {answer.voice && (
                              <button 
                                onClick={() => {
@@ -355,14 +356,7 @@ const ChatPage = () => {
                                  console.log('TTS 재생:', answer.voice);
                                }}
                                style={{
-                                 marginLeft: '10px',
-                                 padding: '2px 8px',
-                                 fontSize: '12px',
-                                 background: '#1A73FC',
-                                 color: 'white',
-                                 border: 'none',
-                                 borderRadius: '4px',
-                                 cursor: 'pointer'
+                                 display: 'none' // TTS 아이콘 숨김
                                }}
                              >
                                🔊
@@ -392,6 +386,7 @@ const ChatPage = () => {
                        {item.main_answer.map((answer, idx) => (
                          <div key={idx}>
                            {answer.text}
+                           {/* TTS 기능은 유지하되 아이콘은 숨김 */}
                            {answer.voice && (
                              <button 
                                onClick={() => {
@@ -399,14 +394,7 @@ const ChatPage = () => {
                                  console.log('TTS 재생:', answer.voice);
                                }}
                                style={{
-                                 marginLeft: '10px',
-                                 padding: '2px 8px',
-                                 fontSize: '12px',
-                                 background: '#1A73FC',
-                                 color: 'white',
-                                 border: 'none',
-                                 borderRadius: '4px',
-                                 cursor: 'pointer'
+                                 display: 'none' // TTS 아이콘 숨김
                                }}
                              >
                                🔊
@@ -447,51 +435,45 @@ const ChatPage = () => {
                   )}
                 </div>
               
-                             ) : (
-                 <div>
-                   {/* 말풍선 - 항상 "찾는중..." */}
-                   <div className={styles.aiMessage}>
-                     <div className={styles.searchingIcon}></div>
-                     찾는중...
-                   </div>
-                   {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
-                   {item.main_answer && item.main_answer.length > 0 && (
-                     <div style={{
-                       color: 'white',
-                       fontSize: '16px',
-                       paddingLeft: '10px',
-                       marginTop: '10px',
-                       marginBottom: '10px'
-                     }}>
-                       {item.main_answer.map((answer, idx) => (
-                         <div key={idx}>
-                           {answer.text}
-                           {answer.voice && (
-                             <button 
-                               onClick={() => {
-                                 // TTS 재생 로직
-                                 console.log('TTS 재생:', answer.voice);
-                               }}
-                               style={{
-                                 marginLeft: '10px',
-                                 padding: '2px 8px',
-                                 fontSize: '12px',
-                                 background: '#1A73FC',
-                                 color: 'white',
-                                 border: 'none',
-                                 borderRadius: '4px',
-                                 cursor: 'pointer'
-                               }}
-                             >
-                               🔊
-                             </button>
-                           )}
-                         </div>
-                       ))}
-                     </div>
-                   )}
-                 </div>
-               )}
+                                                           ) : (
+                  <div>
+                    {/* 말풍선 - 항상 "찾는중..." */}
+                    <div className={styles.aiMessage}>
+                      <div className={styles.searchingIcon}></div>
+                      찾는중...
+                    </div>
+                    {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
+                    {item.main_answer && item.main_answer.length > 0 && (
+                      <div style={{
+                        color: 'white',
+                        fontSize: '16px',
+                        paddingLeft: '10px',
+                        marginTop: '10px',
+                        marginBottom: '10px'
+                      }}>
+                        {item.main_answer.map((answer, idx) => (
+                          <div key={idx}>
+                            {answer.text}
+                            {/* TTS 기능은 유지하되 아이콘은 숨김 */}
+                            {answer.voice && (
+                              <button 
+                                onClick={() => {
+                                  // TTS 재생 로직
+                                  console.log('TTS 재생:', answer.voice);
+                                }}
+                                style={{
+                                  display: 'none' // TTS 아이콘 숨김
+                                }}
+                              >
+                                🔊
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
           ))}
         </div>

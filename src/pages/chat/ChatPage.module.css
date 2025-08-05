@@ -81,9 +81,9 @@
   align-self: flex-start;
   background: #2a3441;
   color: #ffffff;
-  padding: 12px 12px;
+  padding: 12px 16px;
   border-radius: 18px 18px 18px 4px;
-  max-width: 25%;
+  max-width: 40%;
   word-wrap: break-word;
   font-size: 14px;
   line-height: 1.4;
@@ -92,7 +92,7 @@
   gap: 8px;
   /* 말풍선 크기 애니메이션 */
   transition: all 0.1s ease-in-out;
-  min-width: 60px; /* 최소 너비 설정 */
+  min-width: 10px; /* 최소 너비 설정 */
   width: fit-content; /* 텍스트 길이에 맞춰 자동 조절 */
 }
 
@@ -107,8 +107,6 @@
 
 /* 말풍선 축소 애니메이션 */
 .aiMessage.collapsing {
-  width: 40px; /* 가로 너비만 축소 */
-  opacity: 0.7;
   transition: all 0.3s ease-in-out;
   overflow: hidden; /* 텍스트 숨김 */
 }
