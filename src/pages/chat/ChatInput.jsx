@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./css/chatInput.module.css";
 import { RiArrowUpLine, RiMicLine } from "react-icons/ri";
 import { ReactComponent as VoiceSvg } from "../../assets/images/voice.svg";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../../components/ThemeContext";
 import clockIcon from "../../assets/images/clock.png";
 import closeIcon from "../../assets/images/close-window.png";
 import micIcon from "../../assets/images/mic.png";
@@ -82,4 +82,4 @@ const ChatInput = (props) => {
   );
 };
 
-export default ChatInput;
+export default ChatInput; 

@@ -5,7 +5,7 @@ import { ReactTyped } from "react-typed";
 import { ReactComponent as HeadPhoneSvg } from "../../assets/icons/headPhone.svg";
 import { ReactComponent as MicSvg } from "../../assets/icons/mic.svg";
 import { ReactComponent as LoadingSvg } from "../../assets/icons/loading.svg";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../../components/ThemeContext";
 
 const AIChatBox = (props) => {
   const { index, msg, playVoice, handleIsMsgLoading, data, setData, isMsgLoadingRef, scrollToBottom, sendMsgToBotByComponent, isPageNew } = props;

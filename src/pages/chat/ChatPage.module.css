@@ -81,15 +81,19 @@
   align-self: flex-start;
   background: #2a3441;
   color: #ffffff;
-  padding: 12px 16px;
+  padding: 12px 12px;
   border-radius: 18px 18px 18px 4px;
-  max-width: 70%;
+  max-width: 25%;
   word-wrap: break-word;
   font-size: 14px;
   line-height: 1.4;
   display: flex;
   align-items: center;
   gap: 8px;
+  /* 말풍선 크기 애니메이션 */
+  transition: all 0.1s ease-in-out;
+  min-width: 60px; /* 최소 너비 설정 */
+  width: fit-content; /* 텍스트 길이에 맞춰 자동 조절 */
 }
 
 .searchingIcon {
@@ -99,6 +103,22 @@
   border-top: 2px solid transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+/* 말풍선 축소 애니메이션 */
+.aiMessage.collapsing {
+  width: 40px; /* 가로 너비만 축소 */
+  opacity: 0.7;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden; /* 텍스트 숨김 */
+}
+
+/* 말풍선 확장 애니메이션 */
+.aiMessage.expanding {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.1s ease-in-out;
+  max-width: 25%; /* 확장 시 최대 너비 */
 }
 
 @keyframes spin {
@@ -265,4 +285,4 @@
   .greetingText, .helpText {
     font-size: 1rem;
   }
-}
+} 

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import styles from "./css/chatList.module.css";
 import {RiCloseLargeLine, RiMicLine} from "react-icons/ri";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../../components/ThemeContext";
 import AIChatBox from "./AIChatBox";
 import UserChatBox from "./UserChatBox";
 import {getSpeech} from "../../utils/getSpeech";
@@ -9,7 +9,6 @@ import AIChatBoxLoading from "./AIChatBoxLoading";
 
 const ChatListNew = (props) => {
     const isPageNew = true;
-    const thisPageName = "NSAH24P-WEBP-06";
 
     const {isOpen, onClose, data, setData, handleIsMsgLoading, isMsgLoadingRef, isMsgTextingRef, sendMsgToBotByComponent} = props;
     const [showCard, setShowCard] = useState(false);
@@ -169,4 +168,4 @@ const ChatListNew = (props) => {
     );
 };
 
-export default ChatListNew;
+export default ChatListNew; 

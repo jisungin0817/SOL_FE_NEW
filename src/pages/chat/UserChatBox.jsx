@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./css/chatList.module.css";
-import {useTheme} from "../ThemeContext";
+import {useTheme} from "../../components/ThemeContext";
 import {ReactTyped} from "react-typed";
 
 const UserChatBox = (props) => {

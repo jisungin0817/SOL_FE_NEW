@@ -5,7 +5,7 @@ import { ReactComponent as HeadPhoneSvg } from "../../assets/icons/headPhone.svg
 import { ReactComponent as MicSvg } from "../../assets/icons/mic.svg";
 import { ReactComponent as LoadingSvg } from "../../assets/icons/loading.svg";
 // CommonCard import 제거
-import {useTheme} from "../ThemeContext";
+import {useTheme} from "../../components/ThemeContext";
 
 // 케이스별로 사용할때 예시
 const AIChatBoxLoading = (props) => {
