@@ -13,7 +13,7 @@ app.use(cors({
 
 // 프록시 설정
 app.use('/api', createProxyMiddleware({
-  target: 'http://20.249.162.169',
+  target: 'http://20.249.136.139',
   changeOrigin: true,
   pathRewrite: {
     '^/api': '/api/v0/mcp'
