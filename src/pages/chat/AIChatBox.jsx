@@ -117,7 +117,7 @@ const AIChatBox = (props) => {
           {msg && msg.type === 'loading' ? (
             <div className={styles.loadingMessage}>
               <LoadingSvg className={styles.loadingIcon} />
-              <span>응답을 준비하고 있습니다...</span>
+              <span>{msg.main_answer[0]?.text || '찾는중...'}</span>
             </div>
           ) : msg && msg.main_answer && msg.main_answer.length > 0 ? (
             (() => {

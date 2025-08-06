@@ -6,10 +6,12 @@ import { useTheme } from "../../components/ThemeContext";
 import clockIcon from "../../assets/images/clock.png";
 import closeIcon from "../../assets/images/close-window.png";
 import micIcon from "../../assets/images/mic.png";
+import stopButtonIcon from "../../assets/images/stop-button.png";
 
 const ChatInput = (props) => {
   const {
     onSendButtonClick,
+    onStopResponse,
     isLoading,
     userInputRef,
     mic,
@@ -41,7 +43,7 @@ const ChatInput = (props) => {
 
   function _onKeyDown(e) {
     console.log('[ChatInput] 키 이벤트:', e.key);
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !isLoading) {
       console.log('[ChatInput] Enter 키 입력');
       onSendButtonClick(userInputRef.current.value);
     }
@@ -63,9 +65,25 @@ const ChatInput = (props) => {
           placeholder="궁금한점을 물어볼 수 있어요."
           onKeyDown={_onKeyDown}
           disabled={isLoading}
+          style={{ 
+            opacity: isLoading ? 0.5 : 1,
+            cursor: isLoading ? 'not-allowed' : 'text'
+          }}
         />
-        <button className={styles.micButton} disabled={isLoading}>
-          <img src={micIcon} alt="마이크" className={styles.micIcon} />
+        <button 
+          className={styles.micButton} 
+          disabled={false}
+          onClick={isLoading ? onStopResponse : handleMicClick}
+          style={{ 
+            opacity: 1,
+            cursor: 'pointer'
+          }}
+        >
+          <img 
+            src={isLoading ? stopButtonIcon : micIcon} 
+            alt={isLoading ? "중지" : "마이크"} 
+            className={styles.micIcon} 
+          />
         </button>
       </div>
       
