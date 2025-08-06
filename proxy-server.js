@@ -13,10 +13,10 @@ app.use(cors({
 
 // 프록시 설정
 app.use('/api', createProxyMiddleware({
-  target: 'http://m1.geniemars.kt.co.kr:10665',
+  target: 'http://20.249.162.169',
   changeOrigin: true,
   pathRewrite: {
-    '^/api': ''
+    '^/api': '/api/v0/mcp'
   },
   onProxyReq: (proxyReq, req, res) => {
     console.log('프록시 요청:', req.method, req.url);

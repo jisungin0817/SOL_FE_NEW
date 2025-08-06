@@ -32,33 +32,39 @@ const SubComponentPreview = () => {
         type: 'account_card',
         data: [
           {
-            account_title: "출금할 계좌 선택",
-            account_name: "신한 주거래 입출금 통장",
-            account_no: "180-123-0101103",
-            account_expire_date: "",
-            account_amt: "1,500,000",
-            account_amt_type: "KRW",
-            account_amt_type_nm: "원",
+            account_name: "신한은행",
+            account_number: "110-123-456789",
+            account_type: "입출금",
+            balance: "2,500,000",
+            currency: "KRW",
+            status: "정상",
             action: {
-              type: "sendMsg",
-              next_bot_msg: {
-                msg: "신한 주거래 통장"
-              }
+              label: "상세보기",
+              action: "account_detail"
             }
           },
           {
-            account_title: "출금할 계좌 선택",
-            account_name: "신한 급여 통장",
-            account_no: "180-456-7890123",
-            account_expire_date: "",
-            account_amt: "3,200,000",
-            account_amt_type: "KRW",
-            account_amt_type_nm: "원",
+            account_name: "신한은행",
+            account_number: "110-987-654321",
+            account_type: "적금",
+            balance: "5,000,000",
+            currency: "KRW",
+            status: "정상",
             action: {
-              type: "sendMsg",
-              next_bot_msg: {
-                msg: "신한 급여 통장"
-              }
+              label: "상세보기",
+              action: "account_detail"
+            }
+          },
+          {
+            account_name: "신한증권",
+            account_number: "123-456-789",
+            account_type: "증권",
+            balance: "15,000,000",
+            currency: "KRW",
+            status: "정상",
+            action: {
+              label: "상세보기",
+              action: "account_detail"
             }
           }
         ]
@@ -92,28 +98,34 @@ const SubComponentPreview = () => {
         type: 'card',
         data: [
           {
-            product_name: "하나 PIMCO글로벌인컴혼합자산자투",
-            product_sub_name: "자신탁(H) [재간접형]종류C-E",
-            button_text: "가입",
-            action: {
-              type: "sendMsg",
-              next_bot_msg: {
-                msg: "하나 PIMCO글로벌인컴혼합자산자투"
-              }
-            }
+            product_name: "신한카드",
+            product_sub_name: "플래티넘",
+            amount: "500,000"
           },
           {
-            product_name: "쏠편한 정기예금",
-            product_sub_name: "",
-            button_text: "가입",
-            action: {
-              type: "sendMsg",
-              next_bot_msg: {
-                msg: "쏠편한 정기예금"
-              }
-            }
+            product_name: "신한카드",
+            product_sub_name: "골드",
+            amount: "300,000"
           }
         ]
+      }
+    ],
+    transfer_info: [
+      {
+        type: 'transferInfo',
+        data: {
+          withdraw_account: '신한은행 110-123-456789',
+          deposit_account: '신한은행 110-987-654321',
+          transfer_amount: '1,000,000',
+          transfer_cycle: '1회',
+          transfer_period: '2024.12.20',
+          receiver_memo: '월세',
+          my_memo: '12월 월세',
+          action: {
+            label: '확인',
+            action: 'transfer_confirm'
+          }
+        }
       }
     ],
 
@@ -175,6 +187,12 @@ const SubComponentPreview = () => {
             onClick={() => handleTypeChange('card')}
           >
             Card
+          </button>
+          <button 
+            className={selectedType === 'transfer_info' ? styles.active : ''} 
+            onClick={() => handleTypeChange('transfer_info')}
+          >
+            Transfer Info
           </button>
 
         </div>

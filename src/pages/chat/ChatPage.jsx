@@ -64,23 +64,16 @@ const ChatPage = () => {
     setTimeout(scrollToBottom, 100);
 
     try {
-      // 백엔드 API 통신 (Mock 서버 사용)
-      const response = await fetch('/api/v1/chat/completions', {
+      // 백엔드 API 통신 (프록시 서버 사용)
+      const response = await fetch('http://localhost:3002/api/chat/front', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: "gpt-4",
-          messages: [
-            {
-              role: "user",
-              content: data.msg
-            }
-          ],
-          stream: true,
-          max_tokens: 1000,
-          temperature: 0.7
+          user_id: "1",
+          chat_id: "1",
+          text: data.msg
         })
       });
 
@@ -111,80 +104,66 @@ const ChatPage = () => {
             }
 
             try {
-              const parsed = JSON.parse(data);
+              // 응답 데이터 로깅
+              console.log('Raw response data:', data);
               
-                             // sub_data가 loading이면 "찾는중..." 표시
-               if (parsed.sub_data && parsed.sub_data.type === 'loading' && !hasLoadingStarted) {
+              // 빈 데이터나 유효하지 않은 데이터 체크
+              if (!data || data.trim() === '') {
+                console.log('Empty data received, skipping...');
+                continue;
+              }
+              
+              // Python 딕셔너리 형식을 JSON으로 변환
+              let jsonData = data;
+              if (data.startsWith('{') && data.endsWith('}')) {
+                // 작은따옴표를 큰따옴표로 변환
+                jsonData = data.replace(/'/g, '"');
+                // None을 null로 변환
+                jsonData = jsonData.replace(/None/g, 'null');
+                // True를 true로 변환
+                jsonData = jsonData.replace(/True/g, 'true');
+                // False를 false로 변환
+                jsonData = jsonData.replace(/False/g, 'false');
+              }
+              
+              const parsed = JSON.parse(jsonData);
+              
+              // 백엔드 응답 형식에 맞게 처리
+              let botMessage = null;
+              if (parsed.bot_msg_list && parsed.bot_msg_list.length > 0) {
+                botMessage = parsed.bot_msg_list[0];
+              } else {
+                botMessage = parsed; // 기존 형식 호환성 유지
+              }
+              
+              // loading 타입이면 로딩 메시지 표시 (스트리밍 효과 포함)
+               if (botMessage.type === 'loading' && !hasLoadingStarted) {
                  hasLoadingStarted = true;
+                 
+                 // 스트리밍 효과로 로딩 텍스트 표시
+                 const loadingText = botMessage.main_answer[0]?.text || '';
+                 let currentText = '';
+                 
+                 // 빈 텍스트로 로딩 메시지 시작
                  const loadingMsg = {
                    speaker: 'chatbot',
                    type: 'loading',
-                   sub_data: parsed.sub_data
+                   main_answer: [{ text: '', voice: '' }],
+                   sub_data: botMessage.sub_data
                  };
+                 
                  flushSync(() => {
                    setChatListData(prev => [...prev, loadingMsg]);
                    chatListDataRef.current = [...chatListDataRef.current, loadingMsg];
                    setIsMsgLoading(true);
                    isMsgLoadingRef.current = true;
                  });
-               }
-               
-               // loading_text가 있으면 loading 메시지 업데이트 (스트리밍 효과)
-               if (parsed.sub_data && parsed.sub_data.type === 'loading' && parsed.sub_data.loading_text) {
-                 flushSync(() => {
-                   setChatListData(prev => {
-                     const newList = [...prev];
-                     const lastIndex = newList.length - 1;
-                     
-                     // 마지막 메시지가 loading 타입이면 loading_text 업데이트
-                     if (lastIndex >= 0 && newList[lastIndex].type === 'loading') {
-                       newList[lastIndex] = {
-                         ...newList[lastIndex],
-                         sub_data: {
-                           ...newList[lastIndex].sub_data,
-                           loading_text: parsed.sub_data.loading_text
-                         }
-                       };
-                     }
-                     
-                     chatListDataRef.current = newList;
-                     return newList;
-                   });
-                 });
-               }
-              
-                                                           // main_answer가 있으면 loading 메시지에 바로 업데이트 (스트리밍 효과)
-                if (parsed.main_answer && parsed.main_answer.length > 0 && !hasComponentResponse) {
-                  flushSync(() => {
-                    setChatListData(prev => {
-                      const newList = [...prev];
-                      const lastIndex = newList.length - 1;
-                      
-                      // 마지막 메시지가 loading 타입이면 main_answer 추가 (실시간 스트리밍)
-                      if (lastIndex >= 0 && newList[lastIndex].type === 'loading') {
-                        newList[lastIndex] = {
-                          ...newList[lastIndex],
-                          main_answer: parsed.main_answer
-                        };
-                      }
-                      
-                      chatListDataRef.current = newList;
-                      return newList;
-                    });
-                  });
-                }
-                
-                                 // answer 타입이 오면 스트리밍 완료 표시
-                 if (parsed.type === 'answer' && !hasComponentResponse) {
-                   hasComponentResponse = true;
+                 
+                 // 로딩 텍스트를 한 글자씩 추가
+                 for (let i = 0; i < loadingText.length; i++) {
+                   await new Promise(resolve => setTimeout(resolve, 30)); // 30ms 딜레이 (로딩은 더 빠르게)
+                   currentText += loadingText[i];
                    
-                   // 현재 로딩 상태 해제
-                   flushSync(() => {
-                     setIsMsgLoading(false);
-                     isMsgLoadingRef.current = false;
-                   });
-                   
-                   // 기존 메시지에 answer 타입과 추가 데이터 설정
                    flushSync(() => {
                      setChatListData(prev => {
                        const newList = [...prev];
@@ -193,9 +172,48 @@ const ChatPage = () => {
                        if (lastIndex >= 0) {
                          newList[lastIndex] = {
                            ...newList[lastIndex],
+                           main_answer: [{ text: currentText, voice: loadingText }]
+                         };
+                       }
+                       
+                       chatListDataRef.current = newList;
+                       return newList;
+                     });
+                   });
+                 }
+               }
+               
+
+              
+                                                           
+                
+                                 // answer 타입이 오면 스트리밍 완료 표시
+                 if (botMessage.type === 'answer' && !hasComponentResponse) {
+                   hasComponentResponse = true;
+                   
+                   // 현재 로딩 상태 해제
+                   flushSync(() => {
+                     setIsMsgLoading(false);
+                     isMsgLoadingRef.current = false;
+                   });
+                   
+                   // 스트리밍 효과로 텍스트 표시
+                   const fullText = botMessage.main_answer[0]?.text || '';
+                   let currentText = '';
+                   
+                   // 기존 메시지를 answer로 교체 (빈 텍스트로 시작)
+                   flushSync(() => {
+                     setChatListData(prev => {
+                       const newList = [...prev];
+                       const lastIndex = newList.length - 1;
+                       
+                       if (lastIndex >= 0) {
+                         newList[lastIndex] = {
+                           speaker: 'chatbot',
                            type: 'answer',
-                           sub_data: parsed.sub_data || [],
-                           ad_data: parsed.ad_data || null
+                           main_answer: [{ text: '', voice: '' }],
+                           sub_data: botMessage.sub_data || [],
+                           ad_data: botMessage.ad_data || null
                          };
                        }
                        
@@ -203,15 +221,42 @@ const ChatPage = () => {
                        return newList;
                      });
                      
-                     // 애니메이션 키 업데이트로 슬라이딩 효과 트리거
+                     // 슬라이드 효과를 즉시 트리거
                      setAnswerAnimationKey(prev => prev + 1);
                    });
+                   
+                   // 텍스트를 한 글자씩 추가
+                   for (let i = 0; i < fullText.length; i++) {
+                     await new Promise(resolve => setTimeout(resolve, 50)); // 50ms 딜레이
+                     currentText += fullText[i];
+                     
+                     flushSync(() => {
+                       setChatListData(prev => {
+                         const newList = [...prev];
+                         const lastIndex = newList.length - 1;
+                         
+                         if (lastIndex >= 0) {
+                           newList[lastIndex] = {
+                             ...newList[lastIndex],
+                             main_answer: [{ text: currentText, voice: fullText }]
+                           };
+                         }
+                         
+                         chatListDataRef.current = newList;
+                         return newList;
+                       });
+                     });
+                   }
+                   
                  }
               
                                                            
               
             } catch (e) {
               console.error('JSON 파싱 에러:', e);
+              console.error('Problematic data:', data);
+              // JSON 파싱 실패 시에도 계속 진행
+              continue;
             }
           }
         }

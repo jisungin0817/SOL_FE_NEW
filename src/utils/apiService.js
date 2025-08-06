@@ -1,11 +1,11 @@
 // AI 채팅 API 서비스
 // API 설정
 const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://m1.geniemars.kt.co.kr:10665',
+  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://20.249.162.169',
   ENDPOINTS: {
-    CHAT: process.env.REACT_APP_USE_PROXY === 'true' ? '/api/chat' : '/v1/chat/completions',
-    CHAT_STREAM: '/api/chat/stream',
-    HEALTH: '/api/health'
+    CHAT: '/api/v0/mcp/chat/front',
+    CHAT_STREAM: '/api/v0/mcp/chat/front/stream',
+    HEALTH: '/api/v0/mcp/health'
   },
   TIMEOUT: 30000, // 30초
   RETRY_COUNT: 3
