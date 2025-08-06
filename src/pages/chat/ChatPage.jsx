@@ -85,7 +85,7 @@ const ChatPage = () => {
       abortControllerRef.current = new AbortController();
       
       // 백엔드 API 통신 (프록시 서버 사용)
-      const response = await fetch('http://localhost:3002/api/chat/front', {
+      const response = await fetch('http://20.249.136.139/api/chat/front', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
