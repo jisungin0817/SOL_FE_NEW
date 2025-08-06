@@ -105,7 +105,16 @@
   background: linear-gradient(135deg, #1A73FC, #63D8F7);
   background-clip: padding-box;
   position: relative;
-  animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite, searchingGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes searchingGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(26, 115, 252, 0.6), 0 0 20px rgba(99, 216, 247, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(26, 115, 252, 0.9), 0 0 30px rgba(99, 216, 247, 0.7), 0 0 40px rgba(26, 115, 252, 0.5);
+  }
 }
 
 .searchingIcon::before {
@@ -229,7 +238,7 @@
   padding: 0 1rem;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   max-height: calc(100vh - 160px); /* 채팅 컨테이너와 동일한 높이 제한 */
-  overflow: hidden;
+  overflow: visible;
 }
 
 .welcomeMessage.hidden {
@@ -241,12 +250,24 @@
 
 .logoContainer {
   margin-bottom: 2rem;
+  padding: 30px;
+  margin: -30px -30px 2rem -30px;
 }
 
 .logo {
   width: 4rem;
   height: 4rem;
   filter: drop-shadow(0 0 20px rgba(26, 115, 252, 0.5));
+  animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(26, 115, 252, 0.5)) drop-shadow(0 0 30px rgba(99, 216, 247, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba(26, 115, 252, 0.8)) drop-shadow(0 0 40px rgba(99, 216, 247, 0.6)) drop-shadow(0 0 50px rgba(26, 115, 252, 0.4));
+  }
 }
 
 .welcomeText {

@@ -141,7 +141,7 @@ const ChatPage = () => {
                  hasLoadingStarted = true;
                  
                  // 스트리밍 효과로 로딩 텍스트 표시
-                 const loadingText = botMessage.main_answer[0]?.text || '';
+                 const loadingText = botMessage.main_answer[0]?.text || '찾는중...';
                  let currentText = '';
                  
                  // 빈 텍스트로 로딩 메시지 시작
