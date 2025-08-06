@@ -10,6 +10,7 @@ import { initStopwatchRef, resetClock, startClock } from '../../utils/Stopwatch'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import styles from './css/ChatPage.module.css';
 import welcomeLogo from '../../assets/images/welcome_logo.png';
+import { getChatAPIUrl } from '../../config/api';
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -84,8 +85,8 @@ const ChatPage = () => {
       // AbortController 생성
       abortControllerRef.current = new AbortController();
       
-      // 백엔드 API 통신 (프록시 서버 사용)
-      const response = await fetch('http://20.249.136.139/api/chat/front', {
+      // 백엔드 API 통신 (config에서 URL 가져오기)
+      const response = await fetch(getChatAPIUrl(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
