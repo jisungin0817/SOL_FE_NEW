@@ -29,7 +29,7 @@
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  padding: 0 15px 40px;
+  padding: 15px;
   z-index: 10;
 }
 
@@ -42,8 +42,13 @@
   border: none;
   color: #e2e8f0;
   font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   outline: none;
-  padding: 0;
+  line-height: 1.5;
+  vertical-align: middle;
+  resize: none;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .input::placeholder {

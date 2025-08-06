@@ -247,7 +247,7 @@ const ChatPage = () => {
                    
                    // 텍스트를 한 글자씩 추가
                    for (let i = 0; i < fullText.length; i++) {
-                     await new Promise(resolve => setTimeout(resolve, 50)); // 50ms 딜레이
+                     await new Promise(resolve => setTimeout(resolve, 10)); // 10ms 딜레이 (매우 빠른 스트리밍)
                      currentText += fullText[i];
                      
                      flushSync(() => {
@@ -394,9 +394,9 @@ const ChatPage = () => {
       <div style={{ 
         position: 'relative', 
         width: '100%', 
-        height: 'calc(100vh - 120px)', /* ChatInput 높이만큼 제외 */
+        height: 'calc(100vh - 180px)', /* ChatInput 높이 + 상단 아이콘 영역 제외 */
         overflow: 'hidden',
-        paddingTop: '20px' /* 상단 여백 추가 */
+        paddingTop: '80px' /* 상단 아이콘들 아래에서 충분한 여백 확보 */
       }}>
                  {/* 웰컴메시지 - 대화가 없을 때만 표시 */}
          {showWelcomeMessage && chatListData.length === 0 && (
@@ -431,20 +431,20 @@ const ChatPage = () => {
                      <div className={styles.searchingIcon}></div>
                      {item.sub_data && item.sub_data.loading_text ? item.sub_data.loading_text : "찾는중..."}
                    </div>
-                   {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 (스트리밍 효과) */}
-                   {item.main_answer && item.main_answer.length > 0 && (
-                     <div style={{
-                       color: 'white',
-                       fontSize: '16px',
-                       paddingLeft: '10px',
-                       marginTop: '10px',
-                       marginBottom: '10px'
-                     }}>
-                       {item.main_answer.map((answer, idx) => (
-                         <div key={idx}>
-                           {answer.text}
-                           {/* TTS 기능은 유지하되 아이콘은 숨김 */}
-                           {answer.voice && (
+                                       {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 (스트리밍 효과) */}
+                    {item.main_answer && item.main_answer.length > 0 && (
+                      <div style={{
+                        color: 'white',
+                        fontSize: '16px',
+                        paddingLeft: '10px',
+                        marginTop: '10px',
+                        marginBottom: '10px'
+                      }}>
+                        {item.main_answer.map((answer, idx) => (
+                          <div key={idx}>
+                            <div dangerouslySetInnerHTML={{ __html: answer.text }} />
+                            {/* TTS 기능은 유지하되 아이콘은 숨김 */}
+                            {answer.voice && (
                              <button 
                                onClick={() => {
                                  // TTS 재생 로직
@@ -464,23 +464,23 @@ const ChatPage = () => {
                  </div>
               
                                                            ) : item.type === 'answer' ? (
-                  <div className={styles.answerSlideIn}>
-                    {/* 말풍선 - 축소되는 말풍선 */}
-                    <div className={`${styles.aiMessage} ${styles.collapsing}`}>
-                      <div className={styles.searchingIcon}></div>
-                    </div>
-                    {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
-                    {item.main_answer && item.main_answer.length > 0 && (
-                      <div style={{
-                        color: 'white',
-                        fontSize: '16px',
-                        paddingLeft: '10px',
-                        marginTop: '10px',
-                        marginBottom: '10px'
-                      }}>
-                        {item.main_answer.map((answer, idx) => (
-                          <div key={idx}>
-                            {answer.text}
+                                     <div className={styles.answerSlideIn}>
+                     {/* 말풍선 - 축소되는 말풍선 */}
+                     <div className={`${styles.aiMessage} ${styles.collapsing}`}>
+                       <div className={`${styles.searchingIcon} ${styles.answerSpinning}`}></div>
+                     </div>
+                     {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
+                     {item.main_answer && item.main_answer.length > 0 && (
+                       <div style={{
+                         color: 'white',
+                         fontSize: '16px',
+                         paddingLeft: '10px',
+                         marginTop: '10px',
+                         marginBottom: '10px'
+                       }}>
+                         {item.main_answer.map((answer, idx) => (
+                           <div key={idx}>
+                             <div dangerouslySetInnerHTML={{ __html: answer.text }} />
                             {/* TTS 기능은 유지하되 아이콘은 숨김 */}
                             {answer.voice && (
                               <button 
@@ -500,39 +500,53 @@ const ChatPage = () => {
                       </div>
                     )}
                    
-                   {/* 컴포넌트 응답 */}
-                   {item.sub_data && Array.isArray(item.sub_data) && item.sub_data.length > 0 && (
-                     <SubDataRenderer 
-                       data={item.sub_data} 
-                       onAction={(action) => {
-                         console.log('컴포넌트 액션:', action);
-                         // 여기서 컴포넌트의 액션 처리 (예: 버튼 클릭, 카드 선택 등)
-                       }} 
-                     />
-                   )}
+                                       {/* 컴포넌트 응답 */}
+                    {item.sub_data && Array.isArray(item.sub_data) && item.sub_data.length > 0 && (
+                      <SubDataRenderer 
+                        data={item.sub_data} 
+                        onAction={(action) => {
+                          console.log('컴포넌트 액션:', action);
+                          // 여기서 컴포넌트의 액션 처리 (예: 버튼 클릭, 카드 선택 등)
+                        }} 
+                      />
+                    )}
+                    
+                    {/* 추가 텍스트 (ad_data) */}
+                    {item.ad_data && item.ad_data.text && (
+                      <div style={{
+                        color: 'white',
+                        fontSize: '14px',
+                        paddingLeft: '10px',
+                        marginTop: '10px',
+                        marginBottom: '10px',
+                        lineHeight: '1.5'
+                      }}>
+                        <div dangerouslySetInnerHTML={{ __html: item.ad_data.text }} />
+                      </div>
+                    )}
                    
 
                  </div>
               
                                                            ) : (
-                  <div>
-                    {/* 말풍선 - 항상 "찾는중..." */}
-                    <div className={styles.aiMessage}>
-                      <div className={styles.searchingIcon}></div>
-                      찾는중...
-                    </div>
-                    {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
-                    {item.main_answer && item.main_answer.length > 0 && (
-                      <div style={{
-                        color: 'white',
-                        fontSize: '16px',
-                        paddingLeft: '10px',
-                        marginTop: '10px',
-                        marginBottom: '10px'
-                      }}>
-                        {item.main_answer.map((answer, idx) => (
-                          <div key={idx}>
-                            {answer.text}
+                                     <div>
+                     {/* 말풍선 - 항상 "찾는중..." */}
+                     <div className={styles.aiMessage}>
+                       <div className={styles.searchingIcon}></div>
+                       찾는중...
+                     </div>
+                     {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
+                     {item.main_answer && item.main_answer.length > 0 && (
+                       <div style={{
+                         color: 'white',
+                         fontSize: '16px',
+                         paddingLeft: '10px',
+                         marginTop: '10px',
+                         marginBottom: '10px'
+                       }}>
+                         {item.main_answer.map((answer, idx) => (
+                           <div key={idx}>
+                             <div dangerouslySetInnerHTML={{ __html: answer.text }} />
                             {/* TTS 기능은 유지하되 아이콘은 숨김 */}
                             {answer.voice && (
                               <button 

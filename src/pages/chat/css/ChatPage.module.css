@@ -19,12 +19,10 @@
   position: relative;
   z-index: 5;
   padding: 20px;
-  padding-top: 80px; /* 상단 패딩 줄임 */
-  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  height: calc(100vh - 160px); /* 고정 높이로 설정 */
+  height: calc(100vh - 260px); /* 고정 높이로 설정 */
   overflow-y: auto;
   overflow-x: hidden;
   max-width: 100%;
@@ -92,15 +90,13 @@
   gap: 8px;
   /* 말풍선 크기 애니메이션 */
   transition: all 0.1s ease-in-out;
-  min-width: 10px; /* 최소 너비 설정 */
+  min-width: 12px; /* 최소 너비 설정 */
   width: fit-content; /* 텍스트 길이에 맞춰 자동 조절 */
 }
 
 .searchingIcon {
   width: 22px;
   height: 22px;
-  border: 2px solid transparent;
-  border-top: 2px solid transparent;
   border-radius: 50%;
   background: linear-gradient(135deg, #1A73FC, #63D8F7);
   background-clip: padding-box;
@@ -145,6 +141,15 @@
   animation: spin 1s linear infinite;
 }
 
+/* answer 타입일 때 글로우 효과 강화 */
+.searchingIcon.answerSpinning {
+  animation: answerGlow 1.5s ease-in-out infinite alternate;
+}
+
+.searchingIcon.answerSpinning::after {
+  animation: spin 1s linear infinite;
+}
+
 /* 말풍선 축소 애니메이션 */
 .aiMessage.collapsing {
   transition: all 0.3s ease-in-out;
@@ -156,12 +161,20 @@
   transform: scale(1);
   opacity: 1;
   transition: all 0.1s ease-in-out;
-  max-width: 25%; /* 확장 시 최대 너비 */
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes answerGlow {
+  0% {
+    box-shadow: 0 0 15px rgba(26, 115, 252, 0.8), 0 0 25px rgba(99, 216, 247, 0.6), 0 0 35px rgba(26, 115, 252, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(26, 115, 252, 1), 0 0 35px rgba(99, 216, 247, 0.9), 0 0 45px rgba(26, 115, 252, 0.7), 0 0 55px rgba(99, 216, 247, 0.5);
+  }
 }
 
 .aiResponse {
@@ -335,7 +348,7 @@
 @media (max-width: 480px) {
   /* 작은 모바일 스타일 */
   .welcomeMessage {
-    top: 30%;
+    top: 40%;
     padding: 0 0.25rem;
   }
   
