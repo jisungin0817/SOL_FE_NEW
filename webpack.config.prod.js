@@ -54,7 +54,7 @@ module.exports = {
   output: {
     filename: "[name].[chunkhash:10].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/app2/",
+    publicPath: "/",
   },
   plugins: [
     new CleanWebpackPlugin(),

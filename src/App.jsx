@@ -9,7 +9,7 @@ import { ThemeProvider } from "./components/ThemeContext";
 const App = () => {
   return (
     <ThemeProvider>
-      <BrowserRouter basename='/app2'>
+      <BrowserRouter basename='/'>
         <Routes>
           <Route path='/' element={<HomeNew />} />
           <Route path='/chat' element={<ChatPage />} />
