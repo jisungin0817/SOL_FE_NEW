@@ -136,28 +136,31 @@ const ChatPage = () => {
                 botMessage = parsed; // 기존 형식 호환성 유지
               }
               
-              // loading 타입이면 로딩 메시지 표시 (스트리밍 효과 포함)
-               if (botMessage.type === 'loading' && !hasLoadingStarted) {
-                 hasLoadingStarted = true;
+                             // loading 타입이면 로딩 메시지 표시 (스트리밍 효과 포함)
+               if (botMessage.type === 'loading') {
+                 // 첫 번째 loading이면 새 메시지 추가, 아니면 기존 메시지 교체
+                 if (!hasLoadingStarted) {
+                   hasLoadingStarted = true;
+                   
+                   // 빈 텍스트로 로딩 메시지 시작
+                   const loadingMsg = {
+                     speaker: 'chatbot',
+                     type: 'loading',
+                     main_answer: [{ text: '', voice: '' }],
+                     sub_data: botMessage.sub_data
+                   };
+                   
+                   flushSync(() => {
+                     setChatListData(prev => [...prev, loadingMsg]);
+                     chatListDataRef.current = [...chatListDataRef.current, loadingMsg];
+                     setIsMsgLoading(true);
+                     isMsgLoadingRef.current = true;
+                   });
+                 }
                  
                  // 스트리밍 효과로 로딩 텍스트 표시
                  const loadingText = botMessage.main_answer[0]?.text || '찾는중...';
                  let currentText = '';
-                 
-                 // 빈 텍스트로 로딩 메시지 시작
-                 const loadingMsg = {
-                   speaker: 'chatbot',
-                   type: 'loading',
-                   main_answer: [{ text: '', voice: '' }],
-                   sub_data: botMessage.sub_data
-                 };
-                 
-                 flushSync(() => {
-                   setChatListData(prev => [...prev, loadingMsg]);
-                   chatListDataRef.current = [...chatListDataRef.current, loadingMsg];
-                   setIsMsgLoading(true);
-                   isMsgLoadingRef.current = true;
-                 });
                  
                  // 로딩 텍스트를 한 글자씩 추가
                  for (let i = 0; i < loadingText.length; i++) {
