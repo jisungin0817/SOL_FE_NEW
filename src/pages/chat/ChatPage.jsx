@@ -26,6 +26,7 @@ const ChatPage = () => {
   const [sttTimer, setSttTimer] = useState("00:00");
   const [answerAnimationKey, setAnswerAnimationKey] = useState(0);
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const abortControllerRef = useRef(null);
 
   const scrollToBottom = () => {
     const chatContainer = document.querySelector(`.${styles.chatContainer}`);
@@ -38,6 +39,22 @@ const ChatPage = () => {
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }, 100);
     }
+  };
+
+  const stopResponse = () => {
+    console.log('[stopResponse] 응답 중단 요청');
+    
+    // AbortController를 사용하여 fetch 요청 중단
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    
+    // 로딩 상태 해제
+    flushSync(() => {
+      setIsMsgLoading(false);
+      isMsgLoadingRef.current = false;
+    });
   };
 
   const sendMsgToBotByComponent = async (data) => {
@@ -64,6 +81,9 @@ const ChatPage = () => {
     setTimeout(scrollToBottom, 100);
 
     try {
+      // AbortController 생성
+      abortControllerRef.current = new AbortController();
+      
       // 백엔드 API 통신 (프록시 서버 사용)
       const response = await fetch('http://localhost:3002/api/chat/front', {
         method: 'POST',
@@ -74,7 +94,8 @@ const ChatPage = () => {
           user_id: "1",
           chat_id: "1",
           text: data.msg
-        })
+        }),
+        signal: abortControllerRef.current.signal
       });
 
       if (!response.ok) {
@@ -194,11 +215,7 @@ const ChatPage = () => {
                  if (botMessage.type === 'answer' && !hasComponentResponse) {
                    hasComponentResponse = true;
                    
-                   // 현재 로딩 상태 해제
-                   flushSync(() => {
-                     setIsMsgLoading(false);
-                     isMsgLoadingRef.current = false;
-                   });
+                   // 로딩 상태는 스트리밍이 완료될 때까지 유지 (중지 버튼 표시를 위해)
                    
                    // 스트리밍 효과로 텍스트 표시
                    const fullText = botMessage.main_answer[0]?.text || '';
@@ -251,6 +268,12 @@ const ChatPage = () => {
                      });
                    }
                    
+                   // 스트리밍 완료 후 로딩 상태 해제 (중지 버튼을 마이크 버튼으로 변경)
+                   flushSync(() => {
+                     setIsMsgLoading(false);
+                     isMsgLoadingRef.current = false;
+                   });
+                   
                  }
               
                                                            
@@ -275,7 +298,13 @@ const ChatPage = () => {
     } catch (error) {
       console.error('API 통신 에러:', error);
       
-      // 에러 메시지 표시
+      // AbortError인 경우 조용히 처리 (중단 메시지 표시하지 않음)
+      if (error.name === 'AbortError') {
+        console.log('API 요청이 중단되었습니다.');
+        return;
+      }
+      
+      // 일반 에러 메시지 표시
       const errorMsg = {
         speaker: 'chatbot',
         type: 'response',
@@ -296,10 +325,16 @@ const ChatPage = () => {
     const userInput = userInputRef.current?.value;
     if (!userInput || !userInput.trim()) return;
 
-    await sendMsgToBotByComponent({ msg: userInput.trim() });
+    // 로딩 상태 시작
+    setIsMsgLoading(true);
+    isMsgLoadingRef.current = true;
+    
+    // 입력 필드 즉시 초기화
     if (userInputRef.current && userInputRef.current.value !== undefined) {
       userInputRef.current.value = '';
     }
+
+    await sendMsgToBotByComponent({ msg: userInput.trim() });
   };
 
   const handleMicClick = () => {
@@ -532,17 +567,18 @@ const ChatPage = () => {
         zIndex: 100,
         backgroundColor: '#0B111D'
       }}>
-        <ChatInput
-          onSendButtonClick={handleSendButtonClick}
-          isLoading={isMsgLoading}
-          userInputRef={userInputRef}
-          mic={mic}
-          handleMicClick={handleMicClick}
-          browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
-          sttTimer={sttTimer}
-          isChatOpen={true}
-          onClose={handleCloseChat}
-        />
+                 <ChatInput
+           onSendButtonClick={handleSendButtonClick}
+           onStopResponse={stopResponse}
+           isLoading={isMsgLoading}
+           userInputRef={userInputRef}
+           mic={mic}
+           handleMicClick={handleMicClick}
+           browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
+           sttTimer={sttTimer}
+           isChatOpen={true}
+           onClose={handleCloseChat}
+         />
       </div>
       </div>
     </div>
