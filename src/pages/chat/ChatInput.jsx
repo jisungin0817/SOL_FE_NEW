@@ -43,11 +43,13 @@ const ChatInput = (props) => {
 
   function _onKeyDown(e) {
     console.log('[ChatInput] 키 이벤트:', e.key);
-    if (e.key === 'Enter' && !isLoading) {
+    if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
       console.log('[ChatInput] Enter 키 입력');
       onSendButtonClick(userInputRef.current.value);
     }
   }
+
+
 
   return (
     <div
@@ -58,16 +60,19 @@ const ChatInput = (props) => {
       }`}
     >
       <div className={styles.wrap}>
-        <input
-          ref={userInputRef}
-          className={styles.input}
-          type='text'
-          placeholder="궁금한점을 물어볼 수 있어요."
-          onKeyDown={_onKeyDown}
-          disabled={isLoading}
-          style={{ 
+                 <textarea
+           ref={userInputRef}
+           className={styles.input}
+           placeholder="궁금한점을 물어볼 수 있어요."
+           onKeyDown={_onKeyDown}
+           disabled={isLoading}
+           rows={1}
+          style={{
             opacity: isLoading ? 0.5 : 1,
-            cursor: isLoading ? 'not-allowed' : 'text'
+            cursor: isLoading ? 'not-allowed' : 'text',
+            fontFamily: 'inherit',
+            resize: 'none',
+            height: '100%'
           }}
         />
         <button 
