@@ -22,15 +22,14 @@ const SubAccountCard = ({ data, onAction }) => {
              </div>
             <div className={styles.accountInfo}>
               <div className={styles.accountName}>{account.account_name}</div>
-              <div className={styles.accountNumber}>{account.account_no}</div>
+              <div className={styles.accountNumber}>{account.account_number}</div>
             </div>
           </div>
           
           <div className={styles.accountBalance}>
             <div className={styles.balanceAmount}>
-              {account.account_amt} {account.account_amt_type_nm}
+              {account.balance}
             </div>
-            <div className={styles.balanceLabel}>출금가능금액</div>
           </div>
         </div>
       ))}

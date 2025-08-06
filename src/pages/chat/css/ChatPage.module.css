@@ -1,0 +1,304 @@
+.chatPage {
+  /* Rectangle 4 - 전체 화면 */
+  width: 100%;
+  height: 100vh;
+  background: #0B111D;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  padding-top: 0; /* 상단 패딩 제거 */
+}
+
+.darkMode {
+  background-color: #0B111D;
+  color: #e2e8f0;
+}
+
+.chatContainer {
+  position: relative;
+  z-index: 5;
+  padding: 20px;
+  padding-top: 80px; /* 상단 패딩 줄임 */
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: calc(100vh - 160px); /* 고정 높이로 설정 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  /* 스크롤바 스타일링 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.chatContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.chatContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.messageContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.userMessage {
+  align-self: flex-end;
+  color: #597cd8;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.userMessage::before {
+  content: '" ';
+}
+
+.userMessage::after {
+  content: ' "';
+}
+
+.aiMessage {
+  align-self: flex-start;
+  background: #2a3441;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 18px 18px 18px 4px;
+  max-width: 40%;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* 말풍선 크기 애니메이션 */
+  transition: all 0.1s ease-in-out;
+  min-width: 10px; /* 최소 너비 설정 */
+  width: fit-content; /* 텍스트 길이에 맞춰 자동 조절 */
+}
+
+.searchingIcon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #1A73FC;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* 말풍선 축소 애니메이션 */
+.aiMessage.collapsing {
+  transition: all 0.3s ease-in-out;
+  overflow: hidden; /* 텍스트 숨김 */
+}
+
+/* 말풍선 확장 애니메이션 */
+.aiMessage.expanding {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.1s ease-in-out;
+  max-width: 25%; /* 확장 시 최대 너비 */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.aiResponse {
+  align-self: flex-start;
+  color: #ffffff;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+/* 슬라이드 애니메이션 */
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToBottom {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* 응답값 슬라이딩 애니메이션 */
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.answerSlideIn {
+  animation: slideInFromBottom 0.5s ease-out;
+}
+
+.chatContainer {
+  animation: slideInFromBottom 0.5s ease-out;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.chatContainer.slideOut {
+  animation: slideOutToBottom 0.5s ease-in;
+}
+
+/* 웰컴메시지 스타일 */
+.welcomeMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 15;
+  width: 100%;
+  padding: 0 1rem;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  max-height: calc(100vh - 160px); /* 채팅 컨테이너와 동일한 높이 제한 */
+  overflow: hidden;
+}
+
+.welcomeMessage.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  display: none;
+}
+
+.logoContainer {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 4rem;
+  height: 4rem;
+  filter: drop-shadow(0 0 20px rgba(26, 115, 252, 0.5));
+}
+
+.welcomeText {
+  margin-bottom: 1rem;
+}
+
+.welcomeTitle, .welcomeSubtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #1A73FC, #63D8F7, #1A73FC);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 3s ease-in-out infinite;
+  line-height: 1.4;
+}
+
+.userGreeting {
+  color: #6e7a8c;
+}
+
+.greetingText, .helpText {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* 그라데이션 애니메이션 */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 애니메이션 제거 */
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  /* 모바일 스타일 */
+  .welcomeMessage {
+    top: 30%;
+    padding: 0 0.5rem;
+  }
+  
+  .logo {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .welcomeTitle, .welcomeSubtitle {
+    font-size: 1.7rem;
+  }
+  
+  .greetingText, .helpText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 작은 모바일 스타일 */
+  .welcomeMessage {
+    top: 30%;
+    padding: 0 0.25rem;
+  }
+  
+  .logo {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .welcomeTitle, .welcomeSubtitle {
+    font-size: 1.7rem;
+  }
+  
+  .greetingText, .helpText {
+    font-size: 1rem;
+  }
+} 
+
+ 

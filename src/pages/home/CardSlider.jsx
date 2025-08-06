@@ -10,9 +10,9 @@ const CardSlider = (props) => {
     const { isDarkMode, fontSize } = useTheme();
 
     // const title = [
-    //   { title: "예적금 추천", icon: "passbook" },
-    //   { title: "IRP 상품 추천 받기", icon: "safe" },
-    //   { title: "외식 주식 종목 추천 받기", icon: "arrow" }
+    //   { title: "예적금 정보", icon: "passbook" },
+    //   { title: "IRP 상품 정보", icon: "safe" },
+    //   { title: "외식 주식 종목 정보", icon: "arrow" }
 
     let title = [];
     if(initScnrInfo.hasOwnProperty("contents")){

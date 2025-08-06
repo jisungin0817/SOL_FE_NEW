@@ -21,13 +21,11 @@ const SubCard = ({ data, onAction }) => {
               <div className={styles.productSubName}>{product.product_sub_name}</div>
             )}
           </div>
-          
-          <button
-            className={styles.productButton}
-            onClick={() => handleActionClick(product.action)}
-          >
-            {product.button_text}
-          </button>
+          <div className={styles.amountContainer}>
+            {product.amount && (
+              <div className={styles.productAmount}>{product.amount}원</div>
+            )}
+          </div>
         </div>
       ))}
     </div>

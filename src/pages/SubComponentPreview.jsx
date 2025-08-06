@@ -16,7 +16,7 @@ const SubComponentPreview = () => {
       {
         type: 'graph',
         data: {
-          title: '포트폴리오 추천 구성',
+          title: '포트폴리오 구성',
           description: '펀드/ETF는 채권 비중을 높여 구성하는게 좋을 것 같아요.',
           portfolio: {
             fund: 80,

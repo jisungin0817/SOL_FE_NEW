@@ -8,7 +8,7 @@ import SubDataRenderer from '../../components/sub/SubDataRenderer';
 import { getSpeech } from '../../utils/getSpeech';
 import { initStopwatchRef, resetClock, startClock } from '../../utils/Stopwatch';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import styles from './ChatPage.module.css';
+import styles from './css/ChatPage.module.css';
 import welcomeLogo from '../../assets/images/welcome_logo.png';
 
 const ChatPage = () => {
@@ -24,6 +24,7 @@ const ChatPage = () => {
   const userInputRef = useRef();
   const [mic, setMic] = useState(false);
   const [sttTimer, setSttTimer] = useState("00:00");
+  const [answerAnimationKey, setAnswerAnimationKey] = useState(0);
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
   const scrollToBottom = () => {
@@ -152,51 +153,62 @@ const ChatPage = () => {
                  });
                }
               
-                             // main_answer가 있으면 loading 메시지에 바로 업데이트 (스트리밍 효과)
-               if (parsed.main_answer && parsed.main_answer.length > 0 && !hasComponentResponse) {
-                 flushSync(() => {
-                   setChatListData(prev => {
-                     const newList = [...prev];
-                     const lastIndex = newList.length - 1;
-                     
-                     // 마지막 메시지가 loading 타입이면 main_answer 추가 (실시간 스트리밍)
-                     if (lastIndex >= 0 && newList[lastIndex].type === 'loading') {
-                       newList[lastIndex] = {
-                         ...newList[lastIndex],
-                         main_answer: parsed.main_answer
-                       };
-                     }
-                     
-                     chatListDataRef.current = newList;
-                     return newList;
+                                                           // main_answer가 있으면 loading 메시지에 바로 업데이트 (스트리밍 효과)
+                if (parsed.main_answer && parsed.main_answer.length > 0 && !hasComponentResponse) {
+                  flushSync(() => {
+                    setChatListData(prev => {
+                      const newList = [...prev];
+                      const lastIndex = newList.length - 1;
+                      
+                      // 마지막 메시지가 loading 타입이면 main_answer 추가 (실시간 스트리밍)
+                      if (lastIndex >= 0 && newList[lastIndex].type === 'loading') {
+                        newList[lastIndex] = {
+                          ...newList[lastIndex],
+                          main_answer: parsed.main_answer
+                        };
+                      }
+                      
+                      chatListDataRef.current = newList;
+                      return newList;
+                    });
+                  });
+                }
+                
+                                 // answer 타입이 오면 스트리밍 완료 표시
+                 if (parsed.type === 'answer' && !hasComponentResponse) {
+                   hasComponentResponse = true;
+                   
+                   // 현재 로딩 상태 해제
+                   flushSync(() => {
+                     setIsMsgLoading(false);
+                     isMsgLoadingRef.current = false;
                    });
-                 });
-               }
+                   
+                   // 기존 메시지에 answer 타입과 추가 데이터 설정
+                   flushSync(() => {
+                     setChatListData(prev => {
+                       const newList = [...prev];
+                       const lastIndex = newList.length - 1;
+                       
+                       if (lastIndex >= 0) {
+                         newList[lastIndex] = {
+                           ...newList[lastIndex],
+                           type: 'answer',
+                           sub_data: parsed.sub_data || [],
+                           ad_data: parsed.ad_data || null
+                         };
+                       }
+                       
+                       chatListDataRef.current = newList;
+                       return newList;
+                     });
+                     
+                     // 애니메이션 키 업데이트로 슬라이딩 효과 트리거
+                     setAnswerAnimationKey(prev => prev + 1);
+                   });
+                 }
               
-              // 통합 응답 처리 (main_answer + sub_data + ad_data) - 새로운 대화로 시작
-              if (parsed.type === 'answer' && (parsed.main_answer || parsed.sub_data || parsed.ad_data)) {
-                hasComponentResponse = true;
-                
-                // 현재 로딩 상태 해제
-                flushSync(() => {
-                  setIsMsgLoading(false);
-                  isMsgLoadingRef.current = false;
-                });
-                
-                // 새로운 대화로 시작 (이전 대화 초기화)
-                const answerMsg = {
-                  speaker: 'chatbot',
-                  type: 'answer',
-                  main_answer: parsed.main_answer || [],
-                  sub_data: parsed.sub_data || [],
-                  ad_data: parsed.ad_data || null
-                };
-                
-                flushSync(() => {
-                  setChatListData([answerMsg]); // 새로운 대화로 시작
-                  chatListDataRef.current = [answerMsg];
-                });
-              }
+                                                           
               
             } catch (e) {
               console.error('JSON 파싱 에러:', e);
@@ -303,28 +315,28 @@ const ChatPage = () => {
         overflow: 'hidden',
         paddingTop: '20px' /* 상단 여백 추가 */
       }}>
-        {/* 웰컴메시지 - 대화가 없을 때만 표시 */}
-        {showWelcomeMessage && chatListData.length === 0 && (
-          <div className={styles.welcomeMessage}>
-            <div className={styles.logoContainer}>
-              <img src={welcomeLogo} alt="SOL AI Logo" className={styles.logo} />
-            </div>
-            <div className={styles.welcomeText}>
-              <div className={styles.welcomeTitle}>궁금증을 풀어드릴</div>
-              <div className={styles.welcomeSubtitle}>SOL AI에요</div>
-            </div>
-            <div className={styles.userGreeting}>
-              <div className={styles.greetingText}>안녕하세요. 김신한님!</div>
-              <div className={styles.helpText}>무엇을 도와드릴까요?</div>
-            </div>
-          </div>
-        )}
+                 {/* 웰컴메시지 - 대화가 없을 때만 표시 */}
+         {showWelcomeMessage && chatListData.length === 0 && (
+           <div className={styles.welcomeMessage}>
+             <div className={styles.logoContainer}>
+               <img src={welcomeLogo} alt="SOL AI Logo" className={styles.logo} />
+             </div>
+             <div className={styles.welcomeText}>
+               <div className={styles.welcomeTitle}>궁금증을 풀어드릴</div>
+               <div className={styles.welcomeSubtitle}>SOL AI에요</div>
+             </div>
+             <div className={styles.userGreeting}>
+               <div className={styles.greetingText}>안녕하세요. 김신한님!</div>
+               <div className={styles.helpText}>무엇을 도와드릴까요?</div>
+             </div>
+           </div>
+         )}
         
         {/* 채팅 컨테이너 - 대화가 있을 때 표시 */}
         {chatListData.length > 0 && (
         <div className={styles.chatContainer}>
-          {chatListData.map((item, index) => (
-            <div key={index} className={styles.messageContainer}>
+                                           {chatListData.map((item, index) => (
+              <div key={`${index}-${item.type}-${answerAnimationKey}`} className={styles.messageContainer}>
               {item.speaker === 'user' || item.type === 'user_message' ? (
                 <div className={styles.userMessage}>
                   {item.main_answer && item.main_answer[0] ? item.main_answer[0].text : item.msg || ""}
@@ -368,72 +380,56 @@ const ChatPage = () => {
                    )}
                  </div>
               
-                             ) : item.type === 'answer' ? (
-                 <div>
-                   {/* 말풍선 - 축소되는 말풍선 */}
-                   <div className={`${styles.aiMessage} ${styles.collapsing}`}>
-                     <div className={styles.searchingIcon}></div>
-                   </div>
-                   {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
-                   {item.main_answer && item.main_answer.length > 0 && (
-                     <div style={{
-                       color: 'white',
-                       fontSize: '16px',
-                       paddingLeft: '10px',
-                       marginTop: '10px',
-                       marginBottom: '10px'
-                     }}>
-                       {item.main_answer.map((answer, idx) => (
-                         <div key={idx}>
-                           {answer.text}
-                           {/* TTS 기능은 유지하되 아이콘은 숨김 */}
-                           {answer.voice && (
-                             <button 
-                               onClick={() => {
-                                 // TTS 재생 로직
-                                 console.log('TTS 재생:', answer.voice);
-                               }}
-                               style={{
-                                 display: 'none' // TTS 아이콘 숨김
-                               }}
-                             >
-                               🔊
-                             </button>
-                           )}
-                         </div>
-                       ))}
-                     </div>
-                   )}
-                  
-                  {/* 컴포넌트 응답 */}
-                  {item.sub_data && Array.isArray(item.sub_data) && item.sub_data.length > 0 && (
-                    <SubDataRenderer 
-                      data={item.sub_data} 
-                      onAction={(action) => {
-                        console.log('컴포넌트 액션:', action);
-                        // 여기서 컴포넌트의 액션 처리 (예: 버튼 클릭, 카드 선택 등)
-                      }} 
-                    />
-                  )}
-                  
-                  {/* 광고 데이터 */}
-                  {item.ad_data && (
-                    <div style={{
-                      marginTop: '10px',
-                      padding: '10px',
-                      background: '#2a3441',
-                      borderRadius: '8px',
-                      border: '1px solid #1A73FC'
-                    }}>
-                      <div style={{ color: '#1A73FC', fontSize: '14px', fontWeight: 'bold' }}>
-                        💡 추천 정보
-                      </div>
-                      <div style={{ color: 'white', fontSize: '14px', marginTop: '5px' }}>
-                        {JSON.stringify(item.ad_data, null, 2)}
-                      </div>
+                                                           ) : item.type === 'answer' ? (
+                  <div className={styles.answerSlideIn}>
+                    {/* 말풍선 - 축소되는 말풍선 */}
+                    <div className={`${styles.aiMessage} ${styles.collapsing}`}>
+                      <div className={styles.searchingIcon}></div>
                     </div>
-                  )}
-                </div>
+                    {/* main_answer 텍스트 - 말풍선 밑에 흰색으로 */}
+                    {item.main_answer && item.main_answer.length > 0 && (
+                      <div style={{
+                        color: 'white',
+                        fontSize: '16px',
+                        paddingLeft: '10px',
+                        marginTop: '10px',
+                        marginBottom: '10px'
+                      }}>
+                        {item.main_answer.map((answer, idx) => (
+                          <div key={idx}>
+                            {answer.text}
+                            {/* TTS 기능은 유지하되 아이콘은 숨김 */}
+                            {answer.voice && (
+                              <button 
+                                onClick={() => {
+                                  // TTS 재생 로직
+                                  console.log('TTS 재생:', answer.voice);
+                                }}
+                                style={{
+                                  display: 'none' // TTS 아이콘 숨김
+                                }}
+                              >
+                                🔊
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                   
+                   {/* 컴포넌트 응답 */}
+                   {item.sub_data && Array.isArray(item.sub_data) && item.sub_data.length > 0 && (
+                     <SubDataRenderer 
+                       data={item.sub_data} 
+                       onAction={(action) => {
+                         console.log('컴포넌트 액션:', action);
+                         // 여기서 컴포넌트의 액션 처리 (예: 버튼 클릭, 카드 선택 등)
+                       }} 
+                     />
+                   )}
+                   
+
+                 </div>
               
                                                            ) : (
                   <div>

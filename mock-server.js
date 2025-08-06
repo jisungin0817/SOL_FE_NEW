@@ -82,14 +82,12 @@ app.post('/api/v1/chat/completions', async (req, res) => {
               {
                 product_name: '신한카드',
                 product_sub_name: '플래티넘',
-                button_text: '상세보기',
-                action: 'card_detail'
+                amount: '500,000'
               },
               {
                 product_name: '신한카드',
                 product_sub_name: '골드',
-                button_text: '신청하기',
-                action: 'card_apply'
+                amount: '300,000'
               }
             ]
           }
@@ -155,6 +153,93 @@ app.post('/api/v1/chat/completions', async (req, res) => {
           action: 'profit_analysis'
         }
       })}\n\n`);
+    } else if (userMessage.includes('이체') || userMessage.includes('transfer')) {
+      res.write(`data: ${JSON.stringify({
+        type: 'answer',
+        main_answer: [{ 
+          text: `"${userMessage}"에 대한 답변입니다. 이체가 정상적으로 완료되었습니다.`,
+          voice: `"${userMessage}"에 대한 답변입니다. 이체가 정상적으로 완료되었습니다.`
+        }],
+        sub_data: [
+          {
+            type: 'transferInfo',
+            data: {
+              withdraw_account: '신한은행 110-123-456789',
+              deposit_account: '신한은행 110-987-654321',
+              transfer_amount: '1,000,000',
+              transfer_cycle: '1회',
+              transfer_period: '2024.12.20',
+              receiver_memo: '월세',
+              my_memo: '12월 월세',
+              action: {
+                label: '확인',
+                action: 'transfer_confirm'
+              }
+            }
+          }
+        ],
+        ad_data: {
+          title: '이체 완료',
+          description: '정상적으로 처리되었습니다.',
+          action: 'transfer_complete'
+        }
+      })}\n\n`);
+    } else if (userMessage.includes('계좌') || userMessage.includes('account')) {
+      res.write(`data: ${JSON.stringify({
+        type: 'answer',
+        main_answer: [{ 
+          text: `"${userMessage}"에 대한 답변입니다. 고객님의 계좌 정보를 확인해드리겠습니다.`,
+          voice: `"${userMessage}"에 대한 답변입니다. 고객님의 계좌 정보를 확인해드리겠습니다.`
+        }],
+        sub_data: [
+          {
+            type: 'account_card',
+            data: [
+              {
+                account_name: '신한은행',
+                account_number: '110-123-456789',
+                account_type: '입출금',
+                balance: '2,500,000',
+                currency: 'KRW',
+                status: '정상',
+                action: {
+                  label: '상세보기',
+                  action: 'account_detail'
+                }
+              },
+              {
+                account_name: '신한은행',
+                account_number: '110-987-654321',
+                account_type: '적금',
+                balance: '5,000,000',
+                currency: 'KRW',
+                status: '정상',
+                action: {
+                  label: '상세보기',
+                  action: 'account_detail'
+                }
+              },
+              {
+                account_name: '신한증권',
+                account_number: '123-456-789',
+                account_type: '증권',
+                balance: '15,000,000',
+                currency: 'KRW',
+                status: '정상',
+                action: {
+                  label: '상세보기',
+                  action: 'account_detail'
+                }
+              }
+            ]
+          }
+        ],
+        ad_data: {
+          title: '계좌 관리',
+          description: '계좌 정보를 한눈에 확인하세요.',
+          action: 'account_management'
+        }
+      })}\n\n`);
     } else {
       // 일반 텍스트 응답
       res.write(`data: ${JSON.stringify({
@@ -183,5 +268,7 @@ app.listen(port, () => {
   console.log('- "카드" 또는 "card": 카드 컴포넌트 응답');
   console.log('- "그래프" 또는 "chart": 그래프 컴포넌트 응답');
   console.log('- "테이블" 또는 "table": 테이블 컴포넌트 응답');
+  console.log('- "계좌" 또는 "account": 계좌 카드 컴포넌트 응답');
+  console.log('- "이체" 또는 "transfer": 이체 정보 컴포넌트 응답');
   console.log('- 기타: 텍스트 응답만');
 }); 
