@@ -115,7 +115,7 @@ const ChatPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: "1",
+          user_id: "kim123",
           chat_id: "1",
           text: data.msg
         }),
