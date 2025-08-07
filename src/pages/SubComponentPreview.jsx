@@ -37,42 +37,7 @@ const SubComponentPreview = () => {
         {
           type: 'account_card',
           data: [
-            {
-              account_name: "신한은행",
-              account_number: "110-123-456789",
-              account_type: "입출금",
-              balance: "2,500,000",
-              currency: "KRW",
-              status: "정상",
-              action: {
-                label: "상세보기",
-                action: "account_detail"
-              }
-            },
-            {
-              account_name: "신한은행",
-              account_number: "110-987-654321",
-              account_type: "적금",
-              balance: "5,000,000",
-              currency: "KRW",
-              status: "정상",
-              action: {
-                label: "상세보기",
-                action: "account_detail"
-              }
-            },
-            {
-              account_name: "신한증권",
-              account_number: "123-456-789",
-              account_type: "증권",
-              balance: "15,000,000",
-              currency: "KRW",
-              status: "정상",
-              action: {
-                label: "상세보기",
-                action: "account_detail"
-              }
-            }
+            {             account_name: "신한주거래 우대통장",             account_number: "110-123-456789",             balance: "1,500,000"           },           {             account_name: "신한 슈퍼sol 통장",             account_number: "110-987-654321",             balance: "6,000,000"           },           {             account_name: "신한 땡겨요페이 통장",             account_number: "123-456-789",             balance: "15,000,000"           }
           ]
         }
       ],

@@ -12,9 +12,9 @@ try {
 }
 
 const API_CONFIG = {
-  // 개발 환경
+  // 개발 환경 - webpack 프록시 사용
   development: {
-    baseURL: 'http://localhost:3002',
+    baseURL: '',  // 프록시가 처리하므로 빈 문자열
     chatEndpoint: '/api/chat/front'
   },
   
