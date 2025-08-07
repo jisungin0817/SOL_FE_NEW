@@ -38,38 +38,20 @@ const SubComponentPreview = () => {
           type: 'account_card',
           data: [
             {
-            account_name: "신한주거래 우대통장",
-            account_number: "110-123-456789",
-            balance: "1,500,000"
+              account_name: "홍길동 자유적금",
+              account_number: "11012345678901",
+              balance: 5000000
             },
             {
-            account_name: "신한 슈퍼sol 통장",
-            account_number: "110-987-654321",
-            balance: "6,000,000"
-            },
-            {
-            account_name: "신한 땡겨요페이 통장",
-            account_number: "123-456-789",
-            balance: "15,000,000"
+              account_name: "홍길동 정기예금",
+              account_number: "11087654321098",
+              balance: 10000000
             }
           ]
         }
       ],
       ad_data: {
-        text: "총 자산: 22,500,000원<br><br>입출금, 적금, 증권 계좌를 모두 확인할 수 있습니다."
-      }
-    },
-    buttons: {
-      sub_data: [
-        {
-          type: 'buttons',
-          data: [
-            { text: '확인', action: 'confirm', value: 'ok' }
-          ]
-        }
-      ],
-      ad_data: {
-        text: "버튼을 클릭하면 해당 액션이 실행됩니다."
+        text: "총 자산: 15,000,000원<br><br>입출금, 적금, 증권 계좌를 모두 확인할 수 있습니다."
       }
     },
     chart: {
@@ -91,54 +73,68 @@ const SubComponentPreview = () => {
         text: "차트는 시각적으로 수익률을 보여줍니다.<br><br>예상 수익률은 참고용이며, 실제 수익률과는 차이가 있을 수 있습니다."
       }
     },
-    card: {
+    transfer_history: {
       sub_data: [
         {
-          type: 'card',
+          type: 'transfer_history',
           data: [
             {
-              product_name: "2025.05.15",
-              product_sub_name: "집주인",
-              amount: "500,000"
+              transfer_date: "20250720",
+              input_account_name: "김영희",
+              transfer_amt: 500000
             },
             {
-            product_name: "2025.06.15",
-              product_sub_name: "집주인",
-              amount: "500,000"
+              transfer_date: "20250719",
+              input_account_name: "박철수",
+              transfer_amt: 300000
             },
             {
-            product_name: "2025.07.15",
-            product_sub_name: "집주인",
-            amount: "500,000"
+              transfer_date: "20250718",
+              input_account_name: "이영수",
+              transfer_amt: 200000
             }
           ]
         }
       ],
       ad_data: {
-        text: "추천 상품들을 카드 형태로 보여줍니다.<br><br>각 카드를 클릭하면 상세 정보를 확인할 수 있습니다."
+        text: "이체 내역을 확인할 수 있습니다.<br><br>날짜, 입금자명, 이체금액을 한눈에 볼 수 있습니다."
       }
     },
-    transfer_info: {
+    auto_transfer_info: {
       sub_data: [
         {
-          type: 'transferInfo',
+          type: 'auto_transfer_info',
           data: {
-            withdraw_account: '신한은행 110-123-456789',
-            deposit_account: '신한은행 110-987-654321',
-            transfer_amount: '1,000,000',
-            transfer_cycle: '1회',
-            transfer_period: '2024.12.20',
-            receiver_memo: '월세',
-            my_memo: '12월 월세',
-            action: {
-              label: '확인',
-              action: 'transfer_confirm'
-            }
+            output_account: "11012345678900",
+            input_account: "30101234567890",
+            transfer_amt: 150000,
+            transfer_date: "매월 20일",
+            output_account_name: "홍길동",
+            input_account_name: "한국전력",
+            transfer_period: "2025-02-01 ~ 9999-12-31",
+            accept_memo: "전기요금",
+            transfer_memo: "자동납부"
           }
         }
       ],
       ad_data: {
-        text: "이체 정보를 확인하고 승인할 수 있습니다.<br><br>모든 정보가 정확한지 확인 후 진행하세요."
+        text: "자동이체 정보를 확인할 수 있습니다.<br><br>출금계좌, 입금계좌, 이체금액, 이체일자 등의 정보를 확인하세요."
+      }
+    },
+    transfer_result: {
+      sub_data: [
+        {
+          type: 'transfer_result',
+          data: {
+            output_account: "11012345678901",
+            input_account: "11087654321098",
+            transfer_amt: 500000,
+            transfer_period: 4500000
+          }
+        }
+      ],
+      ad_data: {
+        text: "이체 결과를 확인할 수 있습니다.<br><br>출금계좌, 입금계좌, 이체금액, 이체수수료를 확인하세요."
       }
     }
   };
@@ -182,31 +178,29 @@ const SubComponentPreview = () => {
             Account Card
           </button>
           <button 
-            className={selectedType === 'buttons' ? styles.active : ''} 
-            onClick={() => handleTypeChange('buttons')}
-          >
-            Button 1개
-          </button>
-
-          <button 
             className={selectedType === 'chart' ? styles.active : ''} 
             onClick={() => handleTypeChange('chart')}
           >
             Chart
           </button>
           <button 
-            className={selectedType === 'card' ? styles.active : ''} 
-            onClick={() => handleTypeChange('card')}
+            className={selectedType === 'transfer_history' ? styles.active : ''} 
+            onClick={() => handleTypeChange('transfer_history')}
           >
-            Card
+            Transfer History
           </button>
           <button 
-            className={selectedType === 'transfer_info' ? styles.active : ''} 
-            onClick={() => handleTypeChange('transfer_info')}
+            className={selectedType === 'auto_transfer_info' ? styles.active : ''} 
+            onClick={() => handleTypeChange('auto_transfer_info')}
           >
-            Transfer Info
+            Auto Transfer Info
           </button>
-
+          <button 
+            className={selectedType === 'transfer_result' ? styles.active : ''} 
+            onClick={() => handleTypeChange('transfer_result')}
+          >
+            Transfer Result
+          </button>
         </div>
       </div>
 
