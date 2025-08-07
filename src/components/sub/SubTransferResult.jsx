@@ -37,7 +37,7 @@ const SubTransferResult = ({ data, onAction }) => {
             </div>
           </div>
           <div className={styles.detailRow}>
-            <div className={styles.detailLabel}>이체수수료</div>
+            <div className={styles.detailLabel}>이체후잔액</div>
             <div className={styles.detailValue}>{formatAmount(transferResult.transfer_period)}원</div>
           </div>
         </div>

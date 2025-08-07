@@ -135,6 +135,12 @@ const Home = () => {
                 <RiMenuFill className={styles.icon} />
                 <img src={logo} alt='logo' />
                 <div className={styles.headerActions}>
+                  <button 
+                    className={styles.testLink}
+                    onClick={() => navigate('/chat')}
+                  >
+                    채팅 시작
+                  </button>
 
                   <button 
                     className={styles.themeToggle}
