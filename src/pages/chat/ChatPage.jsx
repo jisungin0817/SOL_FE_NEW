@@ -35,6 +35,14 @@ const ChatPage = () => {
   const isAutoScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef(null);
 
+  // 세션 ID 초기화 - 매번 새로운 세션 생성
+  useEffect(() => {
+    // 채팅창에 들어올 때마다 새로운 세션 ID 생성
+    const sessionId = 'session_' + Date.now();
+    localStorage.setItem('chat_session_id', sessionId);
+    console.log('새 세션 ID 생성:', sessionId);
+  }, []);
+
   // 응답의 예상 높이를 계산하는 함수
   const calculateResponseHeight = (chat) => {
     let height = 0;
@@ -227,7 +235,7 @@ const ChatPage = () => {
         },
                  body: JSON.stringify({
            user_id: data.selectedPersona ? data.selectedPersona.user_id.toString() : (selectedPersona ? selectedPersona.user_id.toString() : "1"),
-           chat_id: "1",
+           chat_id: localStorage.getItem('chat_session_id'),
            text: data.msg
          }),
         signal: abortControllerRef.current.signal
