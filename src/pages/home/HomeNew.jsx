@@ -5,7 +5,7 @@ import { RiCloseLargeLine, RiMenuFill } from "react-icons/ri";
 import logo from "../../assets/images/Super_Sol_logo.png";
 import CardSliderWithIndicator from "./CardSliderWithIndicator";
 import CardSlider from "./CardSlider";
-import PersonaSelector from "../../components/PersonaSelector";
+
 // 채팅 관련 import 제거 - 새로운 구조에서는 SubChat을 사용
 
 // 테마 설정 함수들 (임시로 직접 구현)
@@ -39,7 +39,6 @@ const Home = () => {
   };
 
   const [isLoading, setIsLoading] = useState(true);
-  const [showPersonaSelector, setShowPersonaSelector] = useState(false);
   const { isDarkMode, fontSize, toggleDarkMode, changeFontSize } = useTheme();
   
   // 채팅 관련 상태 제거 - ChatPage에서 처리
@@ -48,22 +47,13 @@ const Home = () => {
 
   // 인사말 클릭 이벤트
   const clickCardSliderWithIndicator = async () => {
-    // 페르소나 선택기 표시
-    setShowPersonaSelector(true);
+    // 채팅 페이지로 이동
+    navigate('/chat');
   };
 
   const clickCardSlider = async (event) => {
-    // 페르소나 선택기 표시
-    setShowPersonaSelector(true);
-  };
-
-  const handlePersonaSelect = (persona) => {
-    // 선택된 페르소나 정보를 URL 파라미터로 전달하여 채팅 페이지로 이동
-    navigate(`/chat?persona=${persona.user_id}&name=${persona.name}`);
-  };
-
-  const handleClosePersonaSelector = () => {
-    setShowPersonaSelector(false);
+    // 채팅 페이지로 이동
+    navigate('/chat');
   };
 
   //skeleton loading..
@@ -145,12 +135,7 @@ const Home = () => {
                 <RiMenuFill className={styles.icon} />
                 <img src={logo} alt='logo' />
                 <div className={styles.headerActions}>
-                  <button 
-                    className={styles.testLink}
-                    onClick={() => setShowPersonaSelector(true)}
-                  >
-                    채팅 시작
-                  </button>
+
                   <button 
                     className={styles.themeToggle}
                     onClick={() => navigate('/sub-preview')}
@@ -191,13 +176,7 @@ const Home = () => {
           </div>
         </div>
         
-        {/* 페르소나 선택기 */}
-        {showPersonaSelector && (
-          <PersonaSelector
-            onPersonaSelect={handlePersonaSelect}
-            onClose={handleClosePersonaSelector}
-          />
-        )}
+
       </div>
     </div>
   );

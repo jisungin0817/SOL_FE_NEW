@@ -20,6 +20,7 @@ const ChatInput = (props) => {
     sttTimer,
     isChatOpen,
     onClose,
+    onInputClick,
   } = props;
   const { isDarkMode } = useTheme();
   const [placeholder, setPlaceholder] = useState("");
@@ -49,6 +50,13 @@ const ChatInput = (props) => {
     }
   }
 
+  function _onInputClick() {
+    // input 클릭 시 페르소나 선택기 표시 (한 번만)
+    if (onInputClick) {
+      onInputClick();
+    }
+  }
+
 
 
   return (
@@ -60,13 +68,14 @@ const ChatInput = (props) => {
       }`}
     >
       <div className={styles.wrap}>
-                 <textarea
-           ref={userInputRef}
-           className={styles.input}
-           placeholder="궁금한점을 물어볼 수 있어요."
-           onKeyDown={_onKeyDown}
-           disabled={isLoading}
-           rows={1}
+                                  <textarea
+            ref={userInputRef}
+            className={styles.input}
+            placeholder="궁금한점을 물어볼 수 있어요."
+            onKeyDown={_onKeyDown}
+            onClick={_onInputClick}
+            disabled={isLoading}
+            rows={1}
           style={{
             opacity: isLoading ? 0.5 : 1,
             cursor: isLoading ? 'not-allowed' : 'text',

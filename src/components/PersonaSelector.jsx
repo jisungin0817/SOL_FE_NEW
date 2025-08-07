@@ -8,19 +8,22 @@ const PersonaSelector = ({ onPersonaSelect, onClose }) => {
       id: 1,
       name: "1번",
       description: "30대 중반, 미혼 직장인 남성",
-      user_id: "kim123"
+      user_id: "kim123",
+      text:"내가누구게?"
     },
     {
       id: 2,
       name: "2번",
       description: "40대 중반반기혼 여성 개인 사업자",
-      user_id: "lee123"
+      user_id: "lee123",
+      text:"내가누구게?"
     },
     {
       id: 3,
       name: "3번",
       description: "30대 초반, 미혼 직장인 여성",
-      user_id: "park123"
+      user_id: "park123",
+      text:"내가누구게?"
     }
   ];
 

@@ -5,6 +5,7 @@ import { useTheme } from '../../components/ThemeContext';
 import ChatListNew from './ChatListNew';
 import ChatInput from './ChatInput';
 import SubDataRenderer from '../../components/sub/SubDataRenderer';
+import PersonaSelector from '../../components/PersonaSelector';
 import { getSpeech } from '../../utils/getSpeech';
 import { initStopwatchRef, resetClock, startClock } from '../../utils/Stopwatch';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -19,6 +20,8 @@ const ChatPage = () => {
   const [chatListData, setChatListData] = useState([]);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
   const [isMsgLoading, setIsMsgLoading] = useState(false);
+  const [showPersonaSelector, setShowPersonaSelector] = useState(false);
+  const [selectedPersona, setSelectedPersona] = useState(null);
   const isMsgLoadingRef = useRef(false);
   const isMsgTextingRef = useRef(false);
   const chatListDataRef = useRef([]);
@@ -29,11 +32,45 @@ const ChatPage = () => {
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
   const abortControllerRef = useRef(null);
   const userMessageRef = useRef(null);
+  const isAutoScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef(null);
 
-  // 대화를 턴 단위로 그룹화하는 함수
+  // 응답의 예상 높이를 계산하는 함수
+  const calculateResponseHeight = (chat) => {
+    let height = 0;
+    
+    // 기본 메시지 높이
+    if (chat.main_answer && chat.main_answer[0]?.text) {
+      const textLength = chat.main_answer[0].text.length;
+      // 텍스트 길이에 따른 높이 추정 (대략적인 계산)
+      height += Math.ceil(textLength / 40) * 24; // 40자당 한 줄, 줄당 24px
+    }
+    
+    // 컴포넌트 높이
+    if (chat.sub_data && Array.isArray(chat.sub_data) && chat.sub_data.length > 0) {
+      height += chat.sub_data.length * 150; // 각 컴포넌트당 대략 150px
+    }
+    
+    // ad_data 높이
+    if (chat.ad_data && chat.ad_data.text) {
+      const adTextLength = chat.ad_data.text.length;
+      height += Math.ceil(adTextLength / 40) * 24;
+    }
+    
+    // 기본 패딩과 마진 고려
+    height += 40; // 기본 여백
+    
+    return height;
+  };
+
+  // 대화를 턴 단위로 그룹화하는 함수 (높이 고려)
   const groupChatsByTurn = (chats) => {
     const turns = [];
     let currentTurn = [];
+    let currentTurnHeight = 0;
+    const maxTurnHeight = 500; // 한 턴의 최대 높이 (px) - 더 작게 설정
+    
+    console.log('[groupChatsByTurn] 시작:', chats.length, '개 메시지');
     
     chats.forEach((chat, index) => {
       if (chat.speaker === 'user' || chat.type === 'user_message') {
@@ -42,9 +79,32 @@ const ChatPage = () => {
           turns.push(currentTurn);
         }
         currentTurn = [chat];
+        currentTurnHeight = 60; // 사용자 메시지 기본 높이
       } else {
-        // AI 응답은 현재 턴에 추가
-        currentTurn.push(chat);
+        // AI 응답의 높이 계산
+        const responseHeight = calculateResponseHeight(chat);
+        
+        // 현재 턴에 추가했을 때 높이가 초과되는지 확인
+        if (currentTurnHeight + responseHeight > maxTurnHeight && currentTurn.length > 0) {
+          // 높이가 초과되면 새로운 턴 시작
+          console.log('[groupChatsByTurn] 높이 초과로 새 턴 시작:', {
+            currentHeight: currentTurnHeight,
+            responseHeight: responseHeight,
+            maxHeight: maxTurnHeight
+          });
+          turns.push(currentTurn);
+          currentTurn = [chat];
+          currentTurnHeight = responseHeight;
+        } else {
+          // 현재 턴에 추가
+          console.log('[groupChatsByTurn] 현재 턴에 추가:', {
+            currentHeight: currentTurnHeight,
+            responseHeight: responseHeight,
+            newHeight: currentTurnHeight + responseHeight
+          });
+          currentTurn.push(chat);
+          currentTurnHeight += responseHeight;
+        }
       }
     });
     
@@ -53,15 +113,63 @@ const ChatPage = () => {
       turns.push(currentTurn);
     }
     
+    console.log('[groupChatsByTurn] 완료:', turns.length, '개 턴 생성');
     return turns;
   };
 
-  const scrollToUserMessage = () => {
-    if (userMessageRef.current) {
-      userMessageRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start', // 항상 '맨 위'에 위치하도록
+  const scrollToBottom = () => {
+    const chatWrapper = document.querySelector(`.${styles.chatWrapper}`);
+    if (chatWrapper) {
+      console.log('[scrollToBottom] 스크롤 시도:', {
+        scrollTop: chatWrapper.scrollTop,
+        scrollHeight: chatWrapper.scrollHeight,
+        clientHeight: chatWrapper.clientHeight
       });
+      
+      // 자동 스크롤 플래그 설정
+      isAutoScrollingRef.current = true;
+      
+      // 자동 스크롤 시에만 scroll-snap 일시 비활성화
+      chatWrapper.style.scrollSnapType = 'none';
+      
+      // 여러 방법으로 스크롤 시도
+      const scrollToBottomImmediate = () => {
+        chatWrapper.scrollTop = chatWrapper.scrollHeight;
+        console.log('[scrollToBottom] 즉시 스크롤 완료:', chatWrapper.scrollTop);
+      };
+      
+      const scrollToBottomSmooth = () => {
+        chatWrapper.scrollTo({
+          top: chatWrapper.scrollHeight,
+          behavior: 'smooth'
+        });
+        console.log('[scrollToBottom] 부드러운 스크롤 완료');
+      };
+      
+      // 즉시 스크롤
+      scrollToBottomImmediate();
+      
+      // DOM 업데이트 후 다시 스크롤
+      requestAnimationFrame(() => {
+        scrollToBottomImmediate();
+      });
+      
+      // 부드러운 스크롤도 시도
+      setTimeout(() => {
+        scrollToBottomSmooth();
+      }, 100);
+      
+      // 스크롤 완료 후 scroll-snap 복원 및 플래그 해제
+      setTimeout(() => {
+        chatWrapper.style.scrollSnapType = 'y proximity';
+        isAutoScrollingRef.current = false;
+        console.log('[scrollToBottom] 자동 스크롤 완료, scroll-snap 복원');
+        
+        // 스크롤 이벤트 리스너가 다시 작동하도록 강제로 이벤트 발생
+        chatWrapper.dispatchEvent(new Event('scroll'));
+      }, 500);
+    } else {
+      console.log('[scrollToBottom] chatWrapper를 찾을 수 없음');
     }
   };
 
@@ -102,7 +210,10 @@ const ChatPage = () => {
     setShowWelcomeMessage(false); // 대화 시작 시 웰컴 메시지 완전히 숨김
     });
     
-    // 즉시 스크롤 (setTimeout 제거)
+    // 사용자 메시지 추가 후 즉시 스크롤
+    setTimeout(() => scrollToBottom(), 50);
+    setTimeout(() => scrollToBottom(), 150);
+    setTimeout(() => scrollToBottom(), 300);
 
     try {
       // AbortController 생성
@@ -115,7 +226,7 @@ const ChatPage = () => {
           'Content-Type': 'application/json',
         },
                  body: JSON.stringify({
-           user_id: "1",
+           user_id: data.selectedPersona ? data.selectedPersona.user_id.toString() : (selectedPersona ? selectedPersona.user_id.toString() : "1"),
            chat_id: "1",
            text: data.msg
          }),
@@ -228,6 +339,10 @@ const ChatPage = () => {
                        return newList;
                      });
                    });
+                   
+                   // 스트리밍 중에도 스크롤 유지
+                   setTimeout(() => scrollToBottom(), 10);
+                   setTimeout(() => scrollToBottom(), 50);
                  }
                }
                
@@ -251,15 +366,15 @@ const ChatPage = () => {
                        const newList = [...prev];
                        const lastIndex = newList.length - 1;
                        
-                       if (lastIndex >= 0) {
-                         newList[lastIndex] = {
-                           speaker: 'chatbot',
-                           type: 'answer',
-                           main_answer: [{ text: '', voice: '' }],
-                           sub_data: botMessage.sub_data || [],
-                           ad_data: botMessage.ad_data || null
-                         };
-                       }
+                                                if (lastIndex >= 0) {
+                           newList[lastIndex] = {
+                             speaker: 'chatbot',
+                             type: 'answer',
+                             main_answer: [{ text: '', voice: '' }],
+                             sub_data: [], // 빈 배열로 시작
+                             ad_data: null // null로 시작
+                           };
+                         }
                        
                        chatListDataRef.current = newList;
                        return newList;
@@ -290,6 +405,62 @@ const ChatPage = () => {
                          return newList;
                        });
                      });
+                     
+                     // 스트리밍 중에도 스크롤 유지
+                     setTimeout(() => scrollToBottom(), 10);
+                     setTimeout(() => scrollToBottom(), 50);
+                   }
+                   
+                   // 스트리밍 완료 후 sub_data 추가 (0.5초 후)
+                   if (botMessage.sub_data && Array.isArray(botMessage.sub_data) && botMessage.sub_data.length > 0) {
+                     setTimeout(() => {
+                       flushSync(() => {
+                         setChatListData(prev => {
+                           const newList = [...prev];
+                           const lastIndex = newList.length - 1;
+                           
+                           if (lastIndex >= 0) {
+                             newList[lastIndex] = {
+                               ...newList[lastIndex],
+                               sub_data: botMessage.sub_data
+                             };
+                           }
+                           
+                           chatListDataRef.current = newList;
+                           return newList;
+                         });
+                       });
+                       
+                       // sub_data 추가 후 스크롤
+                       setTimeout(() => scrollToBottom(), 50);
+                       setTimeout(() => scrollToBottom(), 150);
+                       
+                       // ad_data 추가 (0.3초 후)
+                       if (botMessage.ad_data && Object.keys(botMessage.ad_data).length > 0) {
+                         setTimeout(() => {
+                           flushSync(() => {
+                             setChatListData(prev => {
+                               const newList = [...prev];
+                               const lastIndex = newList.length - 1;
+                               
+                               if (lastIndex >= 0) {
+                                 newList[lastIndex] = {
+                                   ...newList[lastIndex],
+                                   ad_data: botMessage.ad_data
+                                 };
+                               }
+                               
+                               chatListDataRef.current = newList;
+                               return newList;
+                             });
+                           });
+                           
+                           // ad_data 추가 후 스크롤
+                           setTimeout(() => scrollToBottom(), 50);
+                           setTimeout(() => scrollToBottom(), 150);
+                         }, 300);
+                       }
+                     }, 500);
                    }
                    
                    // 스트리밍 완료 후 로딩 상태 해제 (중지 버튼을 마이크 버튼으로 변경)
@@ -396,13 +567,49 @@ const ChatPage = () => {
   }, [transcript, listening]);
 
   useEffect(() => {
-    if (userMessageRef.current) {
-      userMessageRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start', // 항상 '맨 위'에 위치하도록
-      });
+    // 메시지가 추가될 때마다 맨 아래로 스크롤
+    if (chatListData.length > 0) {
+      scrollToBottom();
+      // 여러 번 스크롤 시도
+      setTimeout(() => scrollToBottom(), 100);
+      setTimeout(() => scrollToBottom(), 300);
+      setTimeout(() => scrollToBottom(), 500);
     }
   }, [chatListData]); // 메시지가 추가될 때마다 실행
+
+  // 스크롤 이벤트 리스너 추가
+  useEffect(() => {
+    const chatWrapper = document.querySelector(`.${styles.chatWrapper}`);
+    if (chatWrapper) {
+      const handleScroll = () => {
+        // 자동 스크롤 중이 아닐 때만 scroll-snap 활성화
+        if (!isAutoScrollingRef.current) {
+          // 스크롤 중에는 scroll-snap 비활성화
+          chatWrapper.style.scrollSnapType = 'none';
+          
+          // 스크롤이 멈춘 후에 scroll-snap 활성화
+          if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+          }
+          scrollTimeoutRef.current = setTimeout(() => {
+            if (!isAutoScrollingRef.current) {
+              chatWrapper.style.scrollSnapType = 'y proximity';
+              console.log('[handleScroll] scroll-snap 활성화');
+            }
+          }, 200); // 스크롤이 멈춘 후 200ms 후 활성화
+        }
+      };
+      
+      chatWrapper.addEventListener('scroll', handleScroll, { passive: true });
+      
+      return () => {
+        chatWrapper.removeEventListener('scroll', handleScroll);
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+      };
+    }
+  }, []); // 컴포넌트 마운트 시 한 번만 설정
 
   // 웰컴메시지 상태 관리
   useEffect(() => {
@@ -414,10 +621,30 @@ const ChatPage = () => {
     navigate('/');
   };
 
+  const handlePersonaSelect = (persona) => {
+    setSelectedPersona(persona);
+    setShowPersonaSelector(false);
+    
+    // 페르소나 선택 시 "내 프로파일 알려줘" 메시지로 API 호출
+    // persona 객체를 직접 사용하여 user_id 전달
+    sendMsgToBotByComponent({ msg: "내 프로파일 알려줘", selectedPersona: persona });
+  };
+
+  const handleClosePersonaSelector = () => {
+    setShowPersonaSelector(false);
+  };
+
 
 
   return (
     <div className={`${styles.chatPage} ${isDarkMode ? styles.darkMode : ''}`}>
+      {/* 페르소나 선택기 */}
+      {showPersonaSelector && (
+        <PersonaSelector
+          onPersonaSelect={handlePersonaSelect}
+          onClose={handleClosePersonaSelector}
+        />
+      )}
 
       {/* 메인 콘텐츠 영역 */}
       <div style={{ 
@@ -614,18 +841,19 @@ const ChatPage = () => {
         zIndex: 100,
         backgroundColor: '#0B111D'
       }}>
-                 <ChatInput
-           onSendButtonClick={handleSendButtonClick}
-           onStopResponse={stopResponse}
-           isLoading={isMsgLoading}
-           userInputRef={userInputRef}
-           mic={mic}
-           handleMicClick={handleMicClick}
-           browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
-           sttTimer={sttTimer}
-           isChatOpen={true}
-           onClose={handleCloseChat}
-         />
+                                   <ChatInput
+            onSendButtonClick={handleSendButtonClick}
+            onStopResponse={stopResponse}
+            isLoading={isMsgLoading}
+            userInputRef={userInputRef}
+            mic={mic}
+            handleMicClick={handleMicClick}
+            browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
+            sttTimer={sttTimer}
+            isChatOpen={true}
+            onClose={handleCloseChat}
+            onInputClick={() => !selectedPersona && setShowPersonaSelector(true)}
+          />
       </div>
       </div>
     </div>

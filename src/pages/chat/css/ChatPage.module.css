@@ -18,13 +18,22 @@
 .chatWrapper {
   height: calc(100vh - 260px); /* 뷰포트 꽉 채움 */
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity; /* mandatory 대신 proximity 사용 */
   position: relative;
   z-index: 5;
   
   /* 스크롤바 스타일링 */
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  
+  /* 부드러운 스크롤 */
+  scroll-behavior: smooth;
+  
+  /* 스크롤 성능 최적화 */
+  -webkit-overflow-scrolling: touch;
+  
+  /* 스크롤 스냅 동작 개선 */
+  scroll-padding: 0;
 }
 
 .chatContainer {
@@ -49,12 +58,13 @@
 }
 
 .chatTurn {
-  scroll-snap-align: start;
-  height: calc(100vh - 260px); /* 한 화면에 한 턴 */
+  scroll-snap-align: start; /* 턴 단위 스크롤 스냅 */
+  min-height: calc(100vh - 260px); /* 최소 높이 보장 */
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
+  scroll-snap-stop: always; /* 항상 스냅 포인트에서 멈춤 */
 }
 
 .chatContainer::before {
