@@ -9,6 +9,11 @@ const SubAccountCard = ({ data, onAction }) => {
     }
   };
 
+  // 금액 포맷팅 함수
+  const formatAmount = (amount) => {
+    return new Intl.NumberFormat('ko-KR').format(amount);
+  };
+
   // data가 배열인 경우 처리
   const accountData = Array.isArray(data) ? data : [data];
 
@@ -28,7 +33,7 @@ const SubAccountCard = ({ data, onAction }) => {
           
           <div className={styles.accountBalance}>
             <div className={styles.balanceAmount}>
-              {account.balance}
+              {formatAmount(account.balance)}원
             </div>
           </div>
         </div>

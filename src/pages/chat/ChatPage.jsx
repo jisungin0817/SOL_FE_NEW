@@ -114,11 +114,11 @@ const ChatPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          user_id: "kim123",
-          chat_id: "1",
-          text: data.msg
-        }),
+                 body: JSON.stringify({
+           user_id: "1",
+           chat_id: "1",
+           text: data.msg
+         }),
         signal: abortControllerRef.current.signal
       });
 
@@ -414,8 +414,11 @@ const ChatPage = () => {
     navigate('/');
   };
 
+
+
   return (
     <div className={`${styles.chatPage} ${isDarkMode ? styles.darkMode : ''}`}>
+
       {/* 메인 콘텐츠 영역 */}
       <div style={{ 
         position: 'relative', 
@@ -424,8 +427,8 @@ const ChatPage = () => {
         overflow: 'hidden',
         paddingTop: '80px' /* 상단 아이콘들 아래에서 충분한 여백 확보 */
       }}>
-                 {/* 웰컴메시지 - 대화가 없을 때만 표시 */}
-         {showWelcomeMessage && chatListData.length === 0 && (
+                                   {/* 웰컴메시지 - 대화가 없을 때만 표시 */}
+          {showWelcomeMessage && chatListData.length === 0 && (
            <div className={styles.welcomeMessage}>
              <div className={styles.logoContainer}>
                <img src={welcomeLogo} alt="SOL AI Logo" className={styles.logo} />
@@ -434,16 +437,17 @@ const ChatPage = () => {
                <div className={styles.welcomeTitle}>궁금증을 풀어드릴</div>
                <div className={styles.welcomeSubtitle}>SOL AI에요</div>
              </div>
-             <div className={styles.userGreeting}>
-               <div className={styles.greetingText}>안녕하세요. 김신한님!</div>
-               <div className={styles.helpText}>무엇을 도와드릴까요?</div>
-             </div>
+                           <div className={styles.userGreeting}>
+                <div className={styles.greetingText}>안녕하세요. 김신한님!</div>
+                <div className={styles.helpText}>무엇을 도와드릴까요?</div>
+              </div>
            </div>
          )}
         
-                 {/* 채팅 컨테이너 - 대화가 있을 때 표시 */}
-         {chatListData.length > 0 && (
-           <div className={styles.chatWrapper}>
+                                   {/* 채팅 컨테이너 - 대화가 있을 때 표시 */}
+          {chatListData.length > 0 && (
+                       <div className={styles.chatWrapper}>
+             
              {groupChatsByTurn(chatListData).map((turn, turnIndex) => (
                <div key={`turn-${turnIndex}`} className={styles.chatTurn}>
                  {turn.map((item, index) => (
