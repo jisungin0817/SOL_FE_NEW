@@ -148,21 +148,21 @@ const SubComponentPreview = () => {
               etf_return: "+4.8%",          // 수익률
               etf_volatility: "7.2%",        // 변동성
               etf_total_return: "",      //값이 없을수도 잇으면 총보수
-              etf_news_keyword: "ㅇㅇ"
+              etf_news_keyword: "공급망"
             },
             {
               etf_name: "KODEX 배당성장",
               etf_return: "-2.1%",
               etf_volatility: "12.5%",
               etf_total_return: "",
-              etf_news_keyword: "ㅋㅋ"
+              etf_news_keyword: "rpa"
             },
             {
               etf_name: "KBSTAR ESG",
               etf_return: "+1.3%",
               etf_volatility: "8.9%",
               etf_total_return: "",      //값이 없을수도 잇으면 총보수
-              etf_news_keyword: "ㅎㅎ"
+              etf_news_keyword: "엔터회복"
             }]
         }
       ],
