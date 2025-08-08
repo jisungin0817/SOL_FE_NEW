@@ -5,6 +5,7 @@ import SubChart from './SubChart';
 import SubGraph from './SubGraph';
 import SubAutoTransferInfo from './SubAutoTransferInfo';
 import SubTransferResult from './SubTransferResult';
+import SubTableContainer from './SubTableContainer';
 
 const SubDataRenderer = ({ data, onAction }) => {
   const renderSubComponent = (item, index) => {
@@ -21,6 +22,8 @@ const SubDataRenderer = ({ data, onAction }) => {
         return <SubChart key={index} data={item.data} onAction={onAction} />;
       case 'graph':
         return <SubGraph key={index} data={item.data} onAction={onAction} />;
+      case 'table_container':
+        return <SubTableContainer key={index} data={item.data} onAction={onAction} />;
 
       default:
         return <div key={index}>지원하지 않는 컴포넌트 타입입니다.</div>;

@@ -1,0 +1,125 @@
+.tableContainer {
+  width: 100%;
+  margin: 16px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.table {
+  width: 100%;
+  font-size: 18px;
+  color: white;
+}
+
+.tableHeader {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.tableRow {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableRow:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tableRow:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tableRow:nth-child(even):hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tableCell {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.tableCell:last-child {
+  border-right: none;
+}
+
+.cellValue {
+  display: block;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.returnValue {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .tableContainer {
+    margin: 12px 0;
+    border-radius: 8px;
+  }
+  
+  .tableHeader {
+    padding: 12px 8px;
+    font-size: 15px;
+  }
+  
+  .tableCell {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+  
+  .returnValue {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tableHeader {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+  
+  .tableCell {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+  
+  .returnValue {
+    font-size: 13px;
+  }
+}
+
+/* 스크롤바 스타일링 */
+.tableWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

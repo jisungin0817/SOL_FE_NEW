@@ -136,6 +136,39 @@ const SubComponentPreview = () => {
       ad_data: {
         text: "이체 결과를 확인할 수 있습니다.<br><br>출금계좌, 입금계좌, 이체금액, 이체후잔액을 확인하세요."
       }
+    },
+    table_container: {
+      sub_data: [
+        {
+          type: 'table_container',
+          data: [
+            //데이터1
+            {
+              etf_name: "TIGER 고배당", 
+              etf_return: "+4.8%",          // 수익률
+              etf_volatility: "7.2%",        // 변동성
+              etf_total_return: "",      //값이 없을수도 잇으면 총보수
+              etf_news_keyword: "ㅇㅇ"
+            },
+            {
+              etf_name: "KODEX 배당성장",
+              etf_return: "-2.1%",
+              etf_volatility: "12.5%",
+              etf_total_return: "",
+              etf_news_keyword: "ㅋㅋ"
+            },
+            {
+              etf_name: "KBSTAR ESG",
+              etf_return: "+1.3%",
+              etf_volatility: "8.9%",
+              etf_total_return: "",      //값이 없을수도 잇으면 총보수
+              etf_news_keyword: "ㅎㅎ"
+            }]
+        }
+      ],
+      ad_data: {
+        text: "ETF 정보를 테이블 형태로 확인할 수 있습니다.<br><br>ETF명, 수익률, 변동성, 총보수, 최근뉴스키워드 등을 한눈에 볼 수 있습니다."
+      }
     }
   };
 
@@ -200,6 +233,12 @@ const SubComponentPreview = () => {
             onClick={() => handleTypeChange('transfer_result')}
           >
             Transfer Result
+          </button>
+          <button 
+            className={selectedType === 'table_container' ? styles.active : ''} 
+            onClick={() => handleTypeChange('table_container')}
+          >
+            Table Container
           </button>
         </div>
       </div>
