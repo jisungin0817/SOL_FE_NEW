@@ -338,7 +338,7 @@
 .welcomeTitle, .welcomeSubtitle {
   font-size: 1.5rem;
   font-weight: bold;
-  background: linear-gradient(45deg, #1A73FC, #63D8F7, #1A73FC);
+  background: linear-gradient(45deg, #1A73FC, #54bdd9, #067bf8);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
