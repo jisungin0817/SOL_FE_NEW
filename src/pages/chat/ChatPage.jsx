@@ -387,9 +387,6 @@ const ChatPage = () => {
                        chatListDataRef.current = newList;
                        return newList;
                      });
-                     
-                     // 슬라이드 효과를 즉시 트리거
-                     setAnswerAnimationKey(prev => prev + 1);
                    });
                    
                    // 텍스트를 한 글자씩 추가
@@ -475,6 +472,8 @@ const ChatPage = () => {
                    flushSync(() => {
                      setIsMsgLoading(false);
                      isMsgLoadingRef.current = false;
+                     // 응답 완료 후 애니메이션 키 트리거 (응답 메시지만 애니메이션 적용)
+                     setAnswerAnimationKey(prev => prev + 1);
                    });
                    
                  }
@@ -686,7 +685,7 @@ const ChatPage = () => {
              {groupChatsByTurn(chatListData).map((turn, turnIndex) => (
                <div key={`turn-${turnIndex}`} className={styles.chatTurn}>
                  {turn.map((item, index) => (
-                   <div key={`${turnIndex}-${index}-${item.type}-${answerAnimationKey}`} className={styles.messageContainer}>
+                   <div key={`${turnIndex}-${index}-${item.type}${item.type === 'answer' ? `-${answerAnimationKey}` : ''}`} className={styles.messageContainer}>
                      {item.speaker === 'user' || item.type === 'user_message' ? (
                        <div 
                          ref={turnIndex === groupChatsByTurn(chatListData).length - 1 && index === 0 ? userMessageRef : null}

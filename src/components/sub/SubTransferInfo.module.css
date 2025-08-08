@@ -9,7 +9,7 @@
 
 .transferInfoCard {
   background: linear-gradient(135deg, rgb(0 0 0 / 95%), rgb(22 29 38 / 90%), rgb(37 51 71 / 85%));
-  border: 1px solid #51678d;
+  border: 1px solid #ffffff33;
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -81,7 +81,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: 5px 0;
   transition: all 0.3s ease;
 }
 
@@ -122,7 +122,7 @@
 .divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  margin: 16px 0;
+  margin: 8px 0;
 }
 
 .memoSection {
@@ -133,8 +133,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
-  padding: 8px 0;
+  padding: 5px 0;
   transition: all 0.3s ease;
 }
 
@@ -170,7 +169,7 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .transferInfoCard {
-    padding: 16px;
+    padding: 12px 20px;
   }
   
   .detailRow,
